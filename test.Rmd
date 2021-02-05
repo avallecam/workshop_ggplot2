@@ -1,0 +1,45 @@
+---
+title: "Mejora tus gráficos con `ggplot2`"
+subtitle: "⚔<br/>R-Ladies Barcelona Workshop"
+author: "Mireia Ramos-Rodríguez<br/>(adaptado al español por Andree Valle Campos)"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, rladies, rladies-fonts, custom.css]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: |
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(%current% / %total% * 100%);">
+          </div>
+        </div>
+---
+class: inverse, center, middle
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.dim=c(5.5, 4.5), 
+                      # fig.retina=2, 
+                      out.width="100%",
+                      dev="svg")
+
+library(dplyr)
+library(ggplot2)
+library(kableExtra)
+```
+
+```{r,echo=FALSE}
+load("data/tvseries_must_watch.rda")
+df <- tvseries_must_watch
+df <- df[!is.na(df$average_rating),] # Remove rows with NA average
+```
+
+
+
+---
+class: inverse, center, middle
+
+# La gramática de `ggplot2`

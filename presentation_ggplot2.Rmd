@@ -1,7 +1,7 @@
 ---
-title: "Improve your plots with `ggplot2`"
+title: "Mejora tus gráficos con `ggplot2`"
 subtitle: "⚔<br/>R-Ladies Barcelona Workshop"
-author: "Mireia Ramos-Rodríguez"
+author: "Mireia Ramos-Rodríguez<br/>(adaptado al español por Andree Valle Campos)"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
@@ -31,79 +31,88 @@ library(ggplot2)
 library(kableExtra)
 ```
 
-
-# What is `ggplot2`
-
----
-class: left, top
-
-## Why `ggplot2`?
-**`ggplot2`** is a data visualization package for R developed by [Hadley Wickham](https://twitter.com/hadleywickham) that provides a structured approach to graphing. 
-
-It is a part of the **`tidyverse`**, a collection of R packages that share an underlying design philosophy, grammar and data structures.
-
---
-
-.pull-left[
-### Pros
-+ Standardized method for plotting.
-+ Publication quality plots.
-+ Allows creation of relatively complex plots with ease.
-+ Dominant plotting package in R.
-
-```{r, echo=FALSE, out.width="40%", fig.align="center"}
-knitr::include_graphics("https://media.giphy.com/media/nsMPhWK6bfxHq/giphy.gif")
-```
-]
-
---
-
-.pull-right[
-### Cons
-- Might be a little bit difficult to understand at the beginning.
-- Sometimes you might get lost between all the things you can change.
-
-```{r, echo=FALSE, out.width="40%", fig.align="center"}
-knitr::include_graphics("https://media.giphy.com/media/2FazgxLhFpYv4t93G/giphy.gif")
-```
-]
-
----
-class: left, top
-
-## Hands on! `r icon::fa("laptop", pull="left")` 
-### The dataset
-
-```{r, eval=FALSE}
-# install.packages("devtools") # Install devtools
-# devtools::install_github("mireia-bioinfo/tvseries") # Install the package tvseries
-# df <- tvseries::tvseries_must_watch
+```{r,echo=FALSE}
 load("data/tvseries_must_watch.rda")
 df <- tvseries_must_watch
-df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
+df <- df[!is.na(df$average_rating),] # Remove rows with NA average
 ```
 
-```{r, echo=FALSE}
-load("data/tvseries_must_watch.rda")
-df <- tvseries_must_watch
-df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating
-df %>%
-  kable("html", row.names=FALSE) %>%
-  kable_styling(font_size = 10)  %>% 
-  scroll_box(height = "300px")
+```{r,eval=FALSE,echo=FALSE}
+# <!-- # What is `ggplot2` -->
+# 
+# <!-- --- -->
+# <!-- class: left, top -->
+# 
+# <!-- ## Why `ggplot2`? -->
+# <!-- **`ggplot2`** is a data visualization package for R developed by [Hadley Wickham](https://twitter.com/hadleywickham) that provides a structured approach to graphing.  -->
+# 
+# <!-- It is a part of the **`tidyverse`**, a collection of R packages that share an underlying design philosophy, grammar and data structures. -->
+# 
+# <!-- -- -->
+# 
+# <!-- .pull-left[ -->
+# <!-- ### Pros -->
+# <!-- + Standardized method for plotting. -->
+# <!-- + Publication quality plots. -->
+# <!-- + Allows creation of relatively complex plots with ease. -->
+# <!-- + Dominant plotting package in R. -->
+# 
+# <!-- ```{r, echo=FALSE, out.width="40%", fig.align="center"} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/nsMPhWK6bfxHq/giphy.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# 
+# <!-- -- -->
+# 
+# <!-- .pull-right[ -->
+# <!-- ### Cons -->
+# <!-- - Might be a little bit difficult to understand at the beginning. -->
+# <!-- - Sometimes you might get lost between all the things you can change. -->
+# 
+# <!-- ```{r, echo=FALSE, out.width="40%", fig.align="center"} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/2FazgxLhFpYv4t93G/giphy.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: left, top -->
+# 
+# <!-- ## Hands on!  -->
+# <!-- ### The dataset -->
+# 
+# <!-- ```{r, eval=FALSE} -->
+# <!-- # install.packages("devtools") # Install devtools -->
+# <!-- # devtools::install_github("mireia-bioinfo/tvseries") # Install the package tvseries -->
+# <!-- # df <- tvseries::tvseries_must_watch -->
+# <!-- load("data/tvseries_must_watch.rda") -->
+# <!-- df <- tvseries_must_watch -->
+# <!-- df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating -->
+# <!-- ``` -->
+# 
+# <!-- ```{r, echo=FALSE} -->
+# <!-- load("data/tvseries_must_watch.rda") -->
+# <!-- df <- tvseries_must_watch -->
+# <!-- df <- df[!is.na(df$average_rating),] # Remove rows with NA average rating -->
+# <!-- df %>% -->
+# <!--   kable("html", row.names=FALSE) %>% -->
+# <!--   kable_styling(font_size = 10)  %>%  -->
+# <!--   scroll_box(height = "300px") -->
+# <!-- ``` -->
+
 ```
+
 
 ---
 class: inverse, center, middle
 
-# The grammar of `ggplot2`
+# La gramática de `ggplot2`
 
 <!---------------------------------------- BUILDING PLOTS one layer at a time ----------------------------------->
 ---
 layout: true
 class: left, top
 
-## Building plots one layer at a time `r icon::fa("layer-group", pull="left")`
+## Construyendo gráficos una capa por tiempo
 
 ---
 .left-code[
@@ -128,7 +137,7 @@ ggplot(iris,
 ```
 
 #### Data
-### Aesthetics
+### Mapeos
 
 ]
 .right-plot[
@@ -145,8 +154,8 @@ ggplot(iris,
 ```
 
 #### Data
-#### Aesthetics
-### Geometries
+#### Mapeos
+### Geometrías
 ]
 .right-plot[
 ![](`r knitr::fig_chunk("gg-canvas3", "svg")`)
@@ -164,9 +173,9 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-### Scales
+#### Mapeos
+#### Geometrías
+### Escalas
 ]
 .pull-right[]
 ]
@@ -182,17 +191,17 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-   {{stat_summary(fun.y="mean", geom= "line") }}
+   {{stat_summary(fun="mean", geom= "line") }}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
-### Statistical transformations
+### Transformaciones estadísticas
 ]
 ]
 .right-plot[
@@ -207,19 +216,19 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
    {{coord_flip()}}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-### Coordinate systems
+#### Transformaciones estadísticas
+### Sistemas de coordenadas
 ]
 ]
 .right-plot[
@@ -234,21 +243,21 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
    {{facet_wrap(~Species)}}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-### Facets
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+### Paneles (facet)
 ]
 ]
 .right-plot[
@@ -263,7 +272,7 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
     facet_wrap(~Species) +
    {{theme_bw() + theme(legend.position="top")}}
@@ -271,15 +280,15 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-#### Facets
-### Themes
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+### Temas
 ]
 ]
 .right-plot[
@@ -294,7 +303,7 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
     facet_wrap(~Species) +
     theme_bw() + theme(legend.position="top") +
@@ -303,16 +312,16 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-#### Facets
-#### Themes
-### Annotation
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+#### Temas
+### Anotaciones
 ]
 ]
 .right-plot[
@@ -324,13 +333,13 @@ ggplot(iris,
 ---
 layout: false
 class: inverse, middle, center
-# Let's take a deeper look!
+# ¡Vamos a darle una mirada más de cerca!
 
 ---
 layout: true
 class: left, top
 
-## Basic `ggplot2` `r icon::fa("pencil-alt", pull="left")` 
+## `ggplot2` Básico
 
 ---
 class: highlight
@@ -358,14 +367,14 @@ ggplot(iris)
 
 .right-column[
 
-The first step for plotting is having your data in a __tidy__ (aka long) format. What does this mean?
+El primer paso para graficar es tener tu data en formato __tidy__ (largo):
 
-1. Each __variable__ forms a __column__.
-2. Each __observation__ forms a __row__.
+1. Cada __variable__ es una __column__.
+2. Cada __observation__ es una __row__.
 
 .pull-left[
 
-#### Wide format (messy) `r icon::fa("times-circle", color="#DC143C	", pull="left")`
+#### Formato Wide (messy) 
 
 Drug | Response.CTRL | Response.T1D
 -----|---------------|----------------
@@ -377,7 +386,7 @@ C	| 8 |	2
 
 .pull-right[
 
-#### Long format (tidy) `r icon::fa("check-circle", color="#6B8E23", pull="left")`
+#### formato Long (tidy) 
 
 Drug | Patient | Response
 -----|---------|----------
@@ -390,21 +399,24 @@ C	| T1D	| 2
 ]
 ]
 
----
-.left-column[
-## Data
-`ggplot()`
-]
+```{r,eval=FALSE,echo=FALSE}
+# <!-- --- -->
+# <!-- .left-column[ -->
+# <!-- ## Data -->
+# <!-- `ggplot()` -->
+# <!-- ] -->
+# 
+# <!-- .right-column[ -->
+# 
+# <!-- The first step for plotting is having your data in a __tidy__ (aka long) format. What does this mean? -->
+# 
+# <!-- 1. Each __variable__ forms a __column__. -->
+# <!-- 2. Each __observation__ forms a __row__. -->
+# 
+# <!-- You can convert data from **wide** to **long** format using `reshape2::melt()` -->
+# <!-- ] -->
+```
 
-.right-column[
-
-The first step for plotting is having your data in a __tidy__ (aka long) format. What does this mean?
-
-1. Each __variable__ forms a __column__.
-2. Each __observation__ forms a __row__.
-
-You can convert data from **wide** to **long** format using `reshape2::melt()`
-]
 
 ---
 class: highlight
@@ -418,7 +430,7 @@ ggplot(iris,
 ```
 
 #### Data
-### Aesthetics
+### Mapeos
 
 ]
 .right-plot[
@@ -427,22 +439,22 @@ ggplot(iris,
 ---
 .left-column[
 ### Data
-## Aesthetics
+## Mapeos
 `aes()`
 ]
 
 .right-column[
-The __aesthetics__ argument indicates how we map the data columns to visual elements or parameters.
+El argumento __aesthetics__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros.
 
 - Variable 1 → **x**
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
 
-All aesthetics need to be defined inside an `aes()` function.
+Todo Mapeo necesita ser definida dentro de una función `aes()`.
 
-You can define aesthetics for the 
-- **whole plot** by including them in the `ggplot()` function.
-- **specific geometry** by including them in the `geom_XXX()` function.
+Puedes definir Mapeos para:
+- **gráfico completo** incluyéndolo en la función `ggplot()`.
+- **geometría específica** incluyéndolo en la función `geom_XXX()`.
 ]
 
 ---
@@ -457,8 +469,8 @@ ggplot(iris,
 ```
 
 #### Data
-#### Aesthetics
-### Geometries
+#### Mapeos
+### Geometrías
 ]
 .right-plot[
 ![](`r knitr::fig_chunk("gg-canvas3", "svg")`)
@@ -467,13 +479,13 @@ ggplot(iris,
 ---
 .left-column[
 ### Data
-### Aesthetics
-## Geometries
+### Mapeos
+## Geometrías
 `geom_*()`
 ]
 
 .right-column[
-The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
+Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
 
 ```{r geom-point, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
 ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
@@ -483,7 +495,7 @@ ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
 
 ```{r geom-line, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
 ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
-  stat_summary(fun.y="mean", geom="line") +
+  stat_summary(fun="mean", geom="line") +
   theme_void() + theme(legend.position="none")
 ```
 
@@ -524,15 +536,15 @@ Boxplot    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
 ---
 .left-column[
 ### Data
-### Aesthetics
-## Geometries
+### Mapeos
+## Geometrías
 `geom_*()`
 ]
 
 .right-column[
-The **geometries** indicate which geometric shapes should be plotted by using the parameters and variables defined in `aes()`.
+Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
 
-These are just some of all the available `geom_`:
+Estas son algunas de las funciones `geom_*` disponibles:
 
 ```{r, echo=FALSE}
 lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
@@ -543,252 +555,255 @@ lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 layout: false
 class: inverse, middle, center
 
-# Time for some examples & exercises!
+# ¡Tiempo para algunos ejemplos y ejercicios!
 
----
-layout: true
-class: left, top
-
-## Hands on! `r icon::fa("laptop", pull="left")` 
-
----
-.left-code[
-### **Example 1**: Plot the _number of votes_ for each _TV series_ using boxplots
-
-```{r example-1, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, num_votes)) +
-  geom_boxplot()
+```{r,echo=FALSE,eval=FALSE}
+# <!-- --- -->
+# <!-- layout: true -->
+# <!-- class: left, top -->
+# 
+# <!-- ## Hands on!  -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 1**: Plot the _number of votes_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r example-1, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, num_votes)) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-1", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r eval=FALSE} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, num_votes,  -->
+# <!--            fill=season_number)) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-2", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r example-2, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, num_votes,  -->
+# <!--            fill=season_number)) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- This looks wrong... What is happening? -->
+# 
+# <!-- ```{r, out.width="50%", fig.align="center", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/d5Fc6QOUaBawLOxHbR/giphy.gif") -->
+# <!-- ``` -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-2", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r example-2-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, num_votes,  -->
+# <!--            fill=factor(season_number))) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- Some geometries need **discrete values**. As `season_number` is a `numerical` variable, ggplot2 considers it a `continuous` variable. We need to factorize it so ggplot knows how to group the different values. -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-2-corrected", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- ### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots -->
+# 
+# <!-- ### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots -->
+# 
+# <!-- ### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots -->
+# 
+# <!-- Using the plots you generated, try to answer the following questions: -->
+# 
+# <!-- - #### Which is the highest rated TV show? -->
+# <!-- - #### Sequels are never any good? -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r exercise-1, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating)) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- **Which is the highest rated TV show?** -->
+# 
+# <!-- ```{r, out.width="50%", fig.align="center", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/ZB95y3XSFbljaNu7mT/giphy.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-1", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots -->
+# 
+# <!-- ```{r exercise-2, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating,  -->
+# <!--             fill=factor(season_number))) + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- **Sequels are never any good?** -->
+# 
+# <!-- ```{r, out.width="40%", fig.align="center", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/JOIE1rZkUF4qI/giphy.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-2", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots -->
+# 
+# <!-- ```{r exercise-3, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating)) + -->
+# <!--   geom_violin() + -->
+# <!--   geom_boxplot(width=.2) -->
+# <!-- ``` -->
+# 
+# <!-- ```{r, out.width="40%", fig.align="center", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/Zvw675pKMgo2qTmcWR/giphy.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-3", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- This should really be the first and **last** time you produce this kind of plot!  -->
+# 
+# <!-- --- -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots -->
+# 
+# <!-- ```{r example-3, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, -->
+# <!--            fill=factor(season_number))) + -->
+# <!--   geom_bar(stat="count", color="black") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-3", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots -->
+# 
+# <!-- ```{r example-3a, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, -->
+# <!--            fill=factor(season_number))) + -->
+# <!--   geom_bar(stat="count", color="black",  -->
+# <!--            position="fill") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-3a", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots -->
+# 
+# <!-- ```{r example-3b, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, -->
+# <!--            fill=factor(season_number))) + -->
+# <!--   geom_bar(stat="count", color="black",  -->
+# <!--            position="dodge") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-3b", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- ### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_. -->
+# 
+# <!-- **Tip**: `geom_density()` is another example of a function that does not need a y aesthetic -- it automatically computes and draws the kernel density estimate.  -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# <!-- ### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_. -->
+# 
+# <!-- ```{r exercise-4, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(average_rating)) + -->
+# <!--   geom_density(aes(fill=tvseries_title), -->
+# <!--                    alpha=0.5) -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-4", "svg")`) -->
+# <!-- ] -->
 ```
 
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-1", "svg")`)
-]
-
----
-.left-code[
-### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
-
-```{r eval=FALSE}
-ggplot(df,
-       aes(tvseries_title, num_votes, 
-           fill=season_number)) +
-  geom_boxplot()
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-2", "svg")`)
-]
-
----
-.left-code[
-### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
-
-```{r example-2, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, num_votes, 
-           fill=season_number)) +
-  geom_boxplot()
-```
-
-This looks wrong... What is happening?
-
-```{r, out.width="50%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/d5Fc6QOUaBawLOxHbR/giphy.gif")
-```
-
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-2", "svg")`)
-]
-
----
-
-.left-code[
-### **Example 2**: Plot the _number of votes per season_ for each _TV series_ using boxplots
-
-```{r example-2-corrected, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, num_votes, 
-           fill=factor(season_number))) +
-  geom_boxplot()
-```
-
-Some geometries need **discrete values**. As `season_number` is a `numerical` variable, ggplot2 considers it a `continuous` variable. We need to factorize it so ggplot knows how to group the different values.
-
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-2-corrected", "svg")`)
-]
-
----
-class: highlight
-
-### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
-
-### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
-
-### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
-
-Using the plots you generated, try to answer the following questions:
-
-- #### Which is the highest rated TV show?
-- #### Sequels are never any good?
-
----
-class: highlight
-
-.left-code[
-### **Exercise 1**:  Plot the _average ratings_ for each _TV series_ using boxplots
-
-```{r exercise-1, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_boxplot()
-```
-
-**Which is the highest rated TV show?**
-
-```{r, out.width="50%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/ZB95y3XSFbljaNu7mT/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-1", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 2**: Plot the _average ratings per season_ for each _TV series_ using boxplots
-
-```{r exercise-2, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating, 
-            fill=factor(season_number))) +
-  geom_boxplot()
-```
-
-**Sequels are never any good?**
-
-```{r, out.width="40%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/JOIE1rZkUF4qI/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-2", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-### **Exercise 3**: Plot the distribution of _average ratings_ for each _TV series_ using violin plots and boxplots
-
-```{r exercise-3, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_violin() +
-  geom_boxplot(width=.2)
-```
-
-```{r, out.width="40%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/Zvw675pKMgo2qTmcWR/giphy.gif")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-3", "svg")`)
-]
-
-This should really be the first and **last** time you produce this kind of plot! `r icon::fa("grin-tongue-wink")`
-
----
-
-.left-code[
-### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
-
-```{r example-3, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title,
-           fill=factor(season_number))) +
-  geom_bar(stat="count", color="black")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-3", "svg")`)
-]
-
----
-
-.left-code[
-### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
-
-```{r example-3a, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title,
-           fill=factor(season_number))) +
-  geom_bar(stat="count", color="black", 
-           position="fill")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-3a", "svg")`)
-]
-
----
-
-.left-code[
-### **Example 3**: Plot the _number of episodes_ for each _TV series_ using barplots
-
-```{r example-3b, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title,
-           fill=factor(season_number))) +
-  geom_bar(stat="count", color="black", 
-           position="dodge")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-3b", "svg")`)
-]
-
----
-class: highlight
-
-### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
-
-**Tip**: `geom_density()` is another example of a function that does not need a y aesthetic -- it automatically computes and draws the kernel density estimate. 
-
----
-class: highlight
-
-.left-code[
-### **Exercise 4**: Plot the density of _average ratings_ for each _TV series_.
-
-```{r exercise-4, fig.show="hide"}
-ggplot(df,
-       aes(average_rating)) +
-  geom_density(aes(fill=tvseries_title),
-                   alpha=0.5)
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-4", "svg")`)
-]
 
 ---
 layout: false
 class: inverse, middle, center
 
-## Back to basics
+## De retorno a lo básico
 
 ---
 layout: true
 class: left, top
 
-## Basic `ggplot2` `r icon::fa("pencil-alt", pull="left")` 
+## `ggplot2` Básico
 
 ---
 class: highlight
@@ -804,9 +819,9 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-### Scales
+#### Mapeos
+#### Geometrías
+### Escalas
 ]
 .pull-right[
 ]
@@ -819,9 +834,9 @@ ggplot(iris,
 ---
 .left-column[
 ### Data
-### Aesthetics
-### Geometries
-## Scales
+### Mapeos
+### Geometrías
+## Escalas
 `scale_*_*()`
 ]
 
@@ -844,9 +859,10 @@ Some examples:
 ---
 .left-column[
 ### Data
-### Aesthetics
-### Geometries
-## Scales
+### Mapeos
+### Geometrías
+## Escalas
+
 `scale_*_*()`
 ]
 .right-column[
@@ -863,9 +879,10 @@ RColorBrewer::display.brewer.all()
 ---
 .left-column[
 ### Data
-### Aesthetics
-### Geometries
-## Scales
+### Mapeos
+### Geometrías
+## Escalas
+
 `scale_*_*()`
 ]
 .right-column[
@@ -876,112 +893,117 @@ Usually you will use **scales** to change the **color** and **fill** of your dat
 There are additional R packages that provide more color palettes:
 
 - **[`viridis`](https://github.com/sjmgarnier/viridis)**. color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness. These re the new color maps from [Matplotib](https://matplotlib.org/).
-- **[`ggsci`](https://github.com/nanxstats/ggsci)**. Offers a collection of ggplot2 color palettes inspired by scientific journals, data visualization libraries, science fiction movies, and TV shows.
-- **[`gameoftrhones`](https://github.com/aljrico/gameofthrones)**. This package provides a round of palettes inspired by the Game of Thrones TV show.
-- **[`palettetown`](https://github.com/timcdlucas/palettetown)**. An R package providing pokemon colour palettes.
-]
+- **[`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html)**. The HCL space (= polar coordinates in CIELUV) is particularly useful for specifying individual colors and color palettes as its three axes match those of the human visual system very well: Hue (= type of color, dominant wavelength), chroma (= colorfulness), luminance (= brightness). All HCL-based color palettes in the colorspace package (Zeileis et al. 2019) are also provided as discrete, continuous, and binned color scales for the use with the ggplot2 package (Wickham 2016; Wickham et al. 2020).
 
----
-layout: false
-class: inverse, middle, center
-
-# If you want to be a `ggplot2` wizard you need to customize your color scales!
-
-```{r, out.width="40%", fig.align="center", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/t9lPSqrGSc1IOnajTz/giphy.gif")
+```{r,eval=FALSE,echo=FALSE}
+# <!-- - **[`ggsci`](https://github.com/nanxstats/ggsci)**. Offers a collection of ggplot2 color palettes inspired by scientific journals, data visualization libraries, science fiction movies, and TV shows. -->
+# <!-- - **[`gameoftrhones`](https://github.com/aljrico/gameofthrones)**. This package provides a round of palettes inspired by the Game of Thrones TV show. -->
+# <!-- - **[`palettetown`](https://github.com/timcdlucas/palettetown)**. An R package providing pokemon colour palettes. -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- layout: false -->
+# <!-- class: inverse, middle, center -->
+# 
+# <!-- # If you want to be a `ggplot2` wizard you need to customize your color scales! -->
+# 
+# <!-- ```{r, out.width="40%", fig.align="center", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/t9lPSqrGSc1IOnajTz/giphy.gif") -->
+# <!-- ``` -->
+# 
+# <!-- --- -->
+# <!-- layout: true -->
+# <!-- class: left, top -->
+# 
+# <!-- ## Hands on!  -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# 
+# <!-- ### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales! -->
+# <!-- ```{r example-4, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating,  -->
+# <!--            color=factor(season_number))) + -->
+# <!--   geom_jitter() + -->
+# <!--   geom_boxplot() -->
+# <!-- ``` -->
+# 
+# <!-- - Labels for the axis and legend are terrible. -->
+# <!-- - Default `ggplot2` colors. -->
+# <!-- - Difficult to interpret... Many different boxplot and data points. -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-4", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# 
+# <!-- ### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales! -->
+# <!-- ```{r example-4-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating)) + -->
+# <!--   geom_jitter(aes(color=factor(season_number)), -->
+# <!--               width=0.2, alpha=0.8) + -->
+# <!--   geom_boxplot(fill=NA, width=0.5, outlier.shape=NA,  -->
+# <!--                size=1) + -->
+# <!--   scale_color_brewer(palette="RdPu",  -->
+# <!--                      name="Season",  -->
+# <!--                      labels=function(x) paste0("S0",  -->
+# <!--                                                x)) + -->
+# <!--   scale_y_continuous(name="Average Rating (IMDb)", -->
+# <!--                      breaks=scales::pretty_breaks(), -->
+# <!--                      limits=c(0,10)) + -->
+# <!--   xlab("TV series title") -->
+# <!-- ``` -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-4-corrected", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# 
+# <!-- ### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can! -->
+# <!-- ```{r exercise-5, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(runtime_min, fill=tvseries_title)) + -->
+# <!--   geom_density() -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-5", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- class: highlight -->
+# 
+# <!-- .left-code[ -->
+# 
+# <!-- ### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can! -->
+# <!-- ```{r exercise-5-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(runtime_min, fill=tvseries_title)) + -->
+# <!--   geom_density(alpha=0.6) + -->
+# <!--   ggsci::scale_fill_futurama(name="TV series") + -->
+# <!--   scale_x_continuous(name="Episode duration", -->
+# <!--                      breaks=scales::pretty_breaks(n=4), -->
+# <!--                      labels=function(x) paste(x,  -->
+# <!--                                               "min"), -->
+# <!--                      limits=c(0, NA)) + -->
+# <!--   ylab("Density") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("exercise-5-corrected", "svg")`) -->
+# <!-- ] -->
 ```
 
----
-layout: true
-class: left, top
-
-## Hands on! `r icon::fa("laptop", pull="left")` 
-
----
-.left-code[
-
-### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales!
-```{r example-4, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating, 
-           color=factor(season_number))) +
-  geom_jitter() +
-  geom_boxplot()
-```
-
-- Labels for the axis and legend are terrible.
-- Default `ggplot2` colors.
-- Difficult to interpret... Many different boxplot and data points.
-
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-4", "svg")`)
-]
-
----
-.left-code[
-
-### **Example 4**: This plot looks quite sad and wrong... Let's improve it by tweaking its scales!
-```{r example-4-corrected, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_jitter(aes(color=factor(season_number)),
-              width=0.2, alpha=0.8) +
-  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
-               size=1) +
-  scale_color_brewer(palette="RdPu", 
-                     name="Season", 
-                     labels=function(x) paste0("S0", 
-                                               x)) +
-  scale_y_continuous(name="Average Rating (IMDb)",
-                     breaks=scales::pretty_breaks(),
-                     limits=c(0,10)) +
-  xlab("TV series title")
-```
-
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-4-corrected", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-
-### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
-```{r exercise-5, fig.show="hide"}
-ggplot(df,
-       aes(runtime_min, fill=tvseries_title)) +
-  geom_density()
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-5", "svg")`)
-]
-
----
-class: highlight
-
-.left-code[
-
-### **Exercise 5**: Yet another sad plot... Try to improve it as much as you can!
-```{r exercise-5-corrected, fig.show="hide"}
-ggplot(df,
-       aes(runtime_min, fill=tvseries_title)) +
-  geom_density(alpha=0.6) +
-  ggsci::scale_fill_futurama(name="TV series") +
-  scale_x_continuous(name="Episode duration",
-                     breaks=scales::pretty_breaks(n=4),
-                     labels=function(x) paste(x, 
-                                              "min"),
-                     limits=c(0, NA)) +
-  ylab("Density")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("exercise-5-corrected", "svg")`)
-]
 
 ---
 layout: false
@@ -993,7 +1015,7 @@ class: inverse, middle, center
 layout: true
 class: left, top
 
-## Advanced `ggplot2` `r icon::fa("graduation-cap", pull="left")`
+## Advanced `ggplot2` 
 
 ---
 class: highlight
@@ -1005,14 +1027,14 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-   {{stat_summary(fun.y="mean", geom= "line") }}
+   {{stat_summary(fun="mean", geom= "line") }}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
 ### Statistical transformations
@@ -1038,7 +1060,7 @@ The `stat` functions and parameters perform statistical transformations on your 
 ```{r, fig.dim=c(5, 3), dev="svg", out.width="50%", fig.align="center"}
 ggplot(iris, aes(Species, Petal.Width)) +
   geom_jitter(aes(color=Species)) +
-  stat_summary(fun.y=mean, geom="point", size=4) +
+  stat_summary(fun=mean, geom="point", size=4) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 ]
@@ -1053,9 +1075,9 @@ ggplot(df,
            fill=tvseries_title)) +
   geom_jitter(width=0.2, alpha=0.5) +
   stat_summary(aes(group=tvseries_title), 
-               fun.y=mean, geom="line",
+               fun=mean, geom="line",
                size=1) +
-  stat_summary(fun.y=mean, geom="point", 
+  stat_summary(fun=mean, geom="point", 
                size=4, pch=21, color="black") +
   palettetown::scale_color_poke(pokemon="charizard", 
                                 name="TV series") +
@@ -1079,15 +1101,15 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
    {{coord_flip()}}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
 #### Statistical transformations
@@ -1160,16 +1182,16 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
    {{facet_wrap(~Species)}}
 ```
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
 #### Statistical transformations
@@ -1247,7 +1269,7 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
     facet_wrap(~Species) +
    {{theme_bw() + theme(legend.position="top")}}
@@ -1255,9 +1277,9 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
 #### Statistical transformations
@@ -1353,76 +1375,79 @@ ggplot(df,
 ![](`r knitr::fig_chunk("example-8-corrected", "svg")`)  
 ]
 
----
-.left-code[
-### **Example 8**: Replace the default `ggplot2` theme for another one!
-```{r example-8-corrected-b, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title), size=2) +
-  tvthemes::scale_color_brooklyn99(palette = "Regular", 
-                        name="TV series") +
-  xlab("# of votes") + ylab("Average rating") +
- {{tvthemes::theme_brooklyn99()}}
+```{r,echo=FALSE,eval=FALSE}
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 8**: Replace the default `ggplot2` theme for another one! -->
+# <!-- ```{r example-8-corrected-b, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=tvseries_title), size=2) + -->
+# <!--   tvthemes::scale_color_brooklyn99(palette = "Regular",  -->
+# <!--                         name="TV series") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") + -->
+# <!--  {{tvthemes::theme_brooklyn99()}} -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-8-corrected-b", "svg")`)   -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 9**: Modify specific `theme()` elements so the plot looks nicer! -->
+# <!-- ```{r example-9, eval=FALSE} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating)) + -->
+# <!--   geom_jitter(aes(color=factor(season_number)), -->
+# <!--               width=0.2, alpha=0.8) + -->
+# <!--   geom_boxplot(fill=NA, width=0.5, outlier.shape=NA,  -->
+# <!--                size=1) + -->
+# <!--   scale_color_brewer(palette="RdPu",  -->
+# <!--                      name="Season",  -->
+# <!--                      labels=function(x) paste0("S0",  -->
+# <!--                                                x)) + -->
+# <!--   scale_y_continuous(name="Average Rating (IMDb)", -->
+# <!--                      breaks=scales::pretty_breaks(), -->
+# <!--                      limits=c(0,10)) + -->
+# <!--   xlab("TV series title") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-4-corrected", "svg")`)   -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 9**: Modify specific `theme()` elements so the plot looks nicer! -->
+# <!-- ```{r example-9-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(tvseries_title, average_rating)) + -->
+# <!--   geom_jitter(aes(color=factor(season_number)), -->
+# <!--               width=0.2, alpha=0.8) + -->
+# <!--   geom_boxplot(fill=NA, width=0.5, outlier.shape=NA,  -->
+# <!--                size=1) + -->
+# <!--   scale_color_brewer(palette="RdPu",  -->
+# <!--                      name="Season",  -->
+# <!--                      labels=function(x) paste0("S0",  -->
+# <!--                                                x)) + -->
+# <!--   scale_y_continuous(name="Average Rating (IMDb)", -->
+# <!--                      breaks=scales::pretty_breaks(), -->
+# <!--                      limits=c(0,10)) + -->
+# <!--   xlab("TV series title") + -->
+# <!--   theme(axis.text.x=element_text(angle=30, hjust=1), -->
+# <!--         panel.background=element_rect(fill="white"), -->
+# <!--         axis.line=element_line(size=0.5), -->
+# <!--         legend.position="top", -->
+# <!--         axis.text=element_text(size=12), -->
+# <!--         axis.title=element_text(size=14)) -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-9-corrected", "svg")`)   -->
+# <!-- ] -->
 ```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-8-corrected-b", "svg")`)  
-]
 
----
-.left-code[
-### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
-```{r example-9, eval=FALSE}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_jitter(aes(color=factor(season_number)),
-              width=0.2, alpha=0.8) +
-  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
-               size=1) +
-  scale_color_brewer(palette="RdPu", 
-                     name="Season", 
-                     labels=function(x) paste0("S0", 
-                                               x)) +
-  scale_y_continuous(name="Average Rating (IMDb)",
-                     breaks=scales::pretty_breaks(),
-                     limits=c(0,10)) +
-  xlab("TV series title")
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-4-corrected", "svg")`)  
-]
-
----
-.left-code[
-### **Example 9**: Modify specific `theme()` elements so the plot looks nicer!
-```{r example-9-corrected, fig.show="hide"}
-ggplot(df,
-       aes(tvseries_title, average_rating)) +
-  geom_jitter(aes(color=factor(season_number)),
-              width=0.2, alpha=0.8) +
-  geom_boxplot(fill=NA, width=0.5, outlier.shape=NA, 
-               size=1) +
-  scale_color_brewer(palette="RdPu", 
-                     name="Season", 
-                     labels=function(x) paste0("S0", 
-                                               x)) +
-  scale_y_continuous(name="Average Rating (IMDb)",
-                     breaks=scales::pretty_breaks(),
-                     limits=c(0,10)) +
-  xlab("TV series title") +
-  theme(axis.text.x=element_text(angle=30, hjust=1),
-        panel.background=element_rect(fill="white"),
-        axis.line=element_line(size=0.5),
-        legend.position="top",
-        axis.text=element_text(size=12),
-        axis.title=element_text(size=14))
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-9-corrected", "svg")`)  
-]
 
 ---
 class: highlight
@@ -1434,7 +1459,7 @@ ggplot(iris,
           color=Species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
-    stat_summary(fun.y="mean", geom= "line") + 
+    stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
     facet_wrap(~Species) +
     theme_bw() + theme(legend.position="top") +
@@ -1443,9 +1468,9 @@ ggplot(iris,
 
 .pull-left[
 #### Data
-#### Aesthetics
-#### Geometries
-#### Scales
+#### Mapeos
+#### Geometrías
+#### Escalas
 ]
 .pull-right[
 #### Statistical transformations
@@ -1481,7 +1506,7 @@ If you have used `facet_*()` the annotation will be displayed in all the panels!
 layout: false
 class: left, middle
 
-## Saving your `ggplot2` graphs `r icon::fa("save", pull="left")`
+## Saving your `ggplot2` graphs 
 
 The function needed for saving ggplot graphs is `ggsave()`. 
 
@@ -1494,163 +1519,166 @@ ggsave(filename="plot_example.png")
 ```
 
 
----
-class: inverse, middle, center
-
-#### But that's not the end of it
-# Expanding `ggplot2` with extensions
-
----
-layout: true
-class: top, left
-
-## Expanding `ggplot2` `r icon::fa("expand-arrows-alt", pull="left")`
-
----
-### Finding `ggplot2` extensions
-
-Extensions add new functionalities, `geoms`, palettes and themes for `ggplot2`. 
-
-.center[[ggplot2-exts.org](https://www.ggplot2-exts.org/)]
-
-```{r, echo=FALSE, out.width="60%", fig.align="center"}
-knitr::include_graphics("presentation_ggplot2_files/img/screenshot_ggplot2_extensions.png")
+```{r,echo=FALSE,eval=FALSE}
+# <!-- --- -->
+# <!-- class: inverse, middle, center -->
+# 
+# <!-- #### But that's not the end of it -->
+# <!-- # Expanding `ggplot2` with extensions -->
+# 
+# <!-- --- -->
+# <!-- layout: true -->
+# <!-- class: top, left -->
+# 
+# <!-- ## Expanding `ggplot2`  -->
+# 
+# <!-- --- -->
+# <!-- ### Finding `ggplot2` extensions -->
+# 
+# <!-- Extensions add new functionalities, `geoms`, palettes and themes for `ggplot2`.  -->
+# 
+# <!-- .center[[ggplot2-exts.org](https://www.ggplot2-exts.org/)] -->
+# 
+# <!-- ```{r, echo=FALSE, out.width="60%", fig.align="center"} -->
+# <!-- knitr::include_graphics("presentation_ggplot2_files/img/screenshot_ggplot2_extensions.png") -->
+# <!-- ``` -->
+# 
+# <!-- --- -->
+# <!-- ### Combined plots with `cowplot` -->
+# 
+# <!-- [`cowplot`](https://github.com/wilkelab/cowplot) provides various features that help with creating publication-quality figures: -->
+# <!-- - Set of themes -->
+# <!-- - Functions to align plots and arrange them into complex compound figures -->
+# <!-- - Functions that make it easy to annotate plots and or mix plots with images -->
+# 
+# <!-- The `cowplot` package provides the function `plot_grid()` to arrange plots into a grid and label them. More information can be found in the `cowplot` vignette ([here](https://wilkelab.org/cowplot/articles/introduction.html)). -->
+# 
+# <!-- .left-code[ -->
+# <!-- ```{r ex-cowplot, fig.show="hide", message=FALSE, fig.dim=c(5.5, 3)} -->
+# <!-- library(cowplot) -->
+# 
+# <!-- p1 <- ggplot(mtcars, aes(disp, mpg)) +  -->
+# <!--   geom_point() -->
+# <!-- p2 <- ggplot(mtcars, aes(qsec, mpg)) + -->
+# <!--   geom_point() -->
+# 
+# <!-- {{plot_grid(p1, p2, labels = c('A', 'B'))}} -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("ex-cowplot", "svg")`) -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- ### Animated plots with `gganimate` -->
+# 
+# <!-- `gganimate` extends the grammar of graphics as implemented by ggplot2 to include the **description of animation**. It does this by providing a range of new grammar classes that can be added to the plot object in order to customise how it should change with time. -->
+# 
+# <!-- You can find more information on how to animate your ggplot2 plots in the vignette ([here](https://gganimate.com/articles/gganimate.html)). -->
+# 
+# <!-- .left-code[ -->
+# <!-- ```{r, eval=FALSE} -->
+# <!-- library(gganimate) -->
+# <!-- library(gapminder) -->
+# 
+# <!-- ggplot(gapminder,  -->
+# <!--                aes(gdpPercap, lifeExp,  -->
+# <!--                    size = pop, colour = country)) + -->
+# <!--   geom_point(alpha = 0.7, show.legend = FALSE) + -->
+# <!--   scale_colour_manual(values = country_colors) + -->
+# <!--   scale_size(range = c(2, 12)) + -->
+# <!--   scale_x_log10() + -->
+# <!--   facet_wrap(~continent) + -->
+# <!--   # Here comes the gganimate specific bits -->
+# <!--   labs(title = 'Year: {frame_time}',  -->
+# <!--        x = 'GDP per capita',  -->
+# <!--        y = 'life expectancy') + -->
+# <!--   transition_time(year) + -->
+# <!--   ease_aes('linear') -->
+# <!-- ``` -->
+# 
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ```{r, echo=FALSE, out.width="75%"} -->
+# <!-- knitr::include_graphics("https://gganimate.com/reference/figures/README-unnamed-chunk-4-1.gif") -->
+# <!-- ``` -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- ### Interactive plots with `ggiraph` -->
+# <!-- `ggiraph` is a tool that allows you to create **dynamic ggplot graphs**. This allows you to add tooltips, animations and JavaScript actions to the graphics.The package also allows the selection of graphical elements when used in shiny applications. -->
+# 
+# <!-- You can find more information on how to make your ggplot2 plots interactive in the vignette ([here](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)). -->
+# 
+# <!-- .left-code[ -->
+# <!-- ```{r, eval=FALSE} -->
+# <!-- library(ggiraph) -->
+# 
+# <!-- gg_point <-   -->
+# <!--   ggplot(mpg,  -->
+# <!--          aes(displ, cty, color=hwy)) + -->
+# <!--   theme_minimal() + -->
+# <!--   geom_point_interactive(aes(tooltip = model,  -->
+# <!--                              data_id = model),  -->
+# <!--                          size = 2) -->
+# 
+# <!-- girafe(ggobj = gg_point) -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ```{r, echo=FALSE} -->
+# <!-- library(ggiraph) -->
+# 
+# <!-- gg_point <-   -->
+# <!--   ggplot(mpg,  -->
+# <!--          aes(displ, cty, color=hwy)) + -->
+# <!--   theme_minimal() + -->
+# <!--   geom_point_interactive(aes(tooltip = model,  -->
+# <!--                              data_id = model),  -->
+# <!--                          size = 2) -->
+# 
+# <!-- h <- girafe(ggobj = gg_point, width_svg=6, height_svg=3) -->
+# <!-- htmlwidgets::saveWidget(h, file="ggiraph_ex.html") -->
+# <!-- ``` -->
+# 
+# <!-- <iframe src="ggiraph_ex.html" width = "600px", height = "3505px" frameBorder="0"></iframe>  -->
+# 
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- layout: false -->
+# <!-- class: left, top, highlight -->
+# 
+# <!-- ## Hands on!  -->
+# 
+# <!-- ### Play around with `ggplot2` themes & extensions and the `tvseries` dataset! -->
+# 
+# <!-- #### Remember, you can find a gallery of `ggplot2` extensions & themes at [www.ggplot2-exts.org](https://www.ggplot2-exts.org/) -->
+# 
+# <!-- ```{r, out.width="25%", echo=FALSE, fig.align="center"} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/3JVHxc37yo5g3pI5BE/giphy.gif") -->
+# <!-- ``` -->
+# 
+# <!-- ### Share your amazing plots on twitter tagging `@RLadiesBCN`! -->
+# 
+# <!-- --- -->
+# <!-- class: top, left -->
+# 
+# <!-- ## Other `ggplot2` resources  -->
+# 
+# <!-- - [`ggplot2`: Elegant Graphics for Data Analysis](https://ggplot2.tidyverse.org/reference/theme.html) -->
+# <!-- - [`ggplot2` documentation](https://ggplot2.tidyverse.org/reference/) -->
+# <!-- - [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) -->
+# <!-- - [R for Data Science](r4ds.had.co.nz) -->
+# 
+# 
+# <!-- ## This workshop  -->
+# 
+# <!-- You can find the code for these slides & all course materials at [github.com/mireia-bioinfo/workshop_ggplot2](https://github.com/mireia-bioinfo/workshop_ggplot2) -->
+# 
+# <!-- These slides were created using the [xaringan](https://github.com/yihui/xaringan) R package with the R-Ladies themes. -->
 ```
 
----
-### Combined plots with `cowplot`
-
-[`cowplot`](https://github.com/wilkelab/cowplot) provides various features that help with creating publication-quality figures:
-- Set of themes
-- Functions to align plots and arrange them into complex compound figures
-- Functions that make it easy to annotate plots and or mix plots with images
-
-The `cowplot` package provides the function `plot_grid()` to arrange plots into a grid and label them. More information can be found in the `cowplot` vignette ([here](https://wilkelab.org/cowplot/articles/introduction.html)).
-
-.left-code[
-```{r ex-cowplot, fig.show="hide", message=FALSE, fig.dim=c(5.5, 3)}
-library(cowplot)
-
-p1 <- ggplot(mtcars, aes(disp, mpg)) + 
-  geom_point()
-p2 <- ggplot(mtcars, aes(qsec, mpg)) +
-  geom_point()
-
-{{plot_grid(p1, p2, labels = c('A', 'B'))}}
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("ex-cowplot", "svg")`)
-]
-
----
-### Animated plots with `gganimate`
-
-`gganimate` extends the grammar of graphics as implemented by ggplot2 to include the **description of animation**. It does this by providing a range of new grammar classes that can be added to the plot object in order to customise how it should change with time.
-
-You can find more information on how to animate your ggplot2 plots in the vignette ([here](https://gganimate.com/articles/gganimate.html)).
-
-.left-code[
-```{r, eval=FALSE}
-library(gganimate)
-library(gapminder)
-
-ggplot(gapminder, 
-               aes(gdpPercap, lifeExp, 
-                   size = pop, colour = country)) +
-  geom_point(alpha = 0.7, show.legend = FALSE) +
-  scale_colour_manual(values = country_colors) +
-  scale_size(range = c(2, 12)) +
-  scale_x_log10() +
-  facet_wrap(~continent) +
-  # Here comes the gganimate specific bits
-  labs(title = 'Year: {frame_time}', 
-       x = 'GDP per capita', 
-       y = 'life expectancy') +
-  transition_time(year) +
-  ease_aes('linear')
-```
-
-]
-.right-plot[
-```{r, echo=FALSE, out.width="75%"}
-knitr::include_graphics("https://gganimate.com/reference/figures/README-unnamed-chunk-4-1.gif")
-```
-]
-
----
-### Interactive plots with `ggiraph`
-`ggiraph` is a tool that allows you to create **dynamic ggplot graphs**. This allows you to add tooltips, animations and JavaScript actions to the graphics.The package also allows the selection of graphical elements when used in shiny applications.
-
-You can find more information on how to make your ggplot2 plots interactive in the vignette ([here](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)).
-
-.left-code[
-```{r, eval=FALSE}
-library(ggiraph)
-
-gg_point <-  
-  ggplot(mpg, 
-         aes(displ, cty, color=hwy)) +
-  theme_minimal() +
-  geom_point_interactive(aes(tooltip = model, 
-                             data_id = model), 
-                         size = 2)
-  
-girafe(ggobj = gg_point)
-```
-]
-.right-plot[
-```{r, echo=FALSE}
-library(ggiraph)
-
-gg_point <-  
-  ggplot(mpg, 
-         aes(displ, cty, color=hwy)) +
-  theme_minimal() +
-  geom_point_interactive(aes(tooltip = model, 
-                             data_id = model), 
-                         size = 2)
-  
-h <- girafe(ggobj = gg_point, width_svg=6, height_svg=3)
-htmlwidgets::saveWidget(h, file="ggiraph_ex.html")
-```
-
-<iframe src="ggiraph_ex.html" width = "600px", height = "3505px" frameBorder="0"></iframe> 
-
-]
-
----
-layout: false
-class: left, top, highlight
-
-## Hands on! `r icon::fa("laptop", pull="left")` 
-
-### Play around with `ggplot2` themes & extensions and the `tvseries` dataset!
-
-#### Remember, you can find a gallery of `ggplot2` extensions & themes at [www.ggplot2-exts.org](https://www.ggplot2-exts.org/)
-
-```{r, out.width="25%", echo=FALSE, fig.align="center"}
-knitr::include_graphics("https://media.giphy.com/media/3JVHxc37yo5g3pI5BE/giphy.gif")
-```
-
-### Share your amazing plots on twitter tagging `@RLadiesBCN`!
-
----
-class: top, left
-
-## Other `ggplot2` resources `r icon::fa("book", pull="left")`
-
-- [`ggplot2`: Elegant Graphics for Data Analysis](https://ggplot2.tidyverse.org/reference/theme.html)
-- [`ggplot2` documentation](https://ggplot2.tidyverse.org/reference/)
-- [Data Visualization Cheat Sheet](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
-- [R for Data Science](r4ds.had.co.nz)
-
-
-## This workshop `r icon::fa("book-reader", pull="left")`
-
-You can find the code for these slides & all course materials at [github.com/mireia-bioinfo/workshop_ggplot2](https://github.com/mireia-bioinfo/workshop_ggplot2)
-
-These slides were created using the [xaringan](https://github.com/yihui/xaringan) R package with the R-Ladies themes.
 
 ---
 class: inverse, center, middle
@@ -1661,15 +1689,18 @@ class: inverse, center, middle
 knitr::include_graphics("https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif")
 ```
 
----
-class: inverse, center, middle
-
-# Let's test what you've learned today!
-
-```{r, out.width="50%", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/xThtalkAxYnZd94uB2/giphy.gif")
+```{r,eval=FALSE,echo=FALSE}
+# <!-- --- -->
+# <!-- class: inverse, center, middle -->
+# 
+# <!-- # Let's test what you've learned today! -->
+# 
+# <!-- ```{r, out.width="50%", echo=FALSE} -->
+# <!-- knitr::include_graphics("https://media.giphy.com/media/xThtalkAxYnZd94uB2/giphy.gif") -->
+# <!-- ``` -->
+# 
+# <!-- Go to -->
+# 
+# <!-- #[kahoot.it](https://kahoot.it/) -->
 ```
 
-Go to
-
-#[kahoot.it](https://kahoot.it/)
