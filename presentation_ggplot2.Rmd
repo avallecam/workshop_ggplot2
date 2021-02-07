@@ -823,7 +823,7 @@ class: inverse, middle, center
 layout: true
 class: left, top
 
-## `ggplot2` básico
+## `ggplot2` intermedio
 
 ---
 class: highlight
@@ -887,38 +887,78 @@ Algunos ejemplos:
 
 ]
 .right-column[
-Usually you will use **scales** to change the **color** and **fill** of your data. 
+Usualmente se usan **scales** para cambiar el **color** y **fill** de tu data
 
-`ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
+`ggplot2` usa [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) por defecto
 
-```{r, fig.dim=c(7,8), dev="png", out.width="50%", fig.align="center", echo=FALSE}
-RColorBrewer::display.brewer.all()
+Recomendamos usar [`viridis`](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) y [`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html#available-palettes-1), diseñados para ser __uniformes__ a la percepción y con escalas __inclusivas__ a disfunciones visuales como el daltonismo.
+
+```{r,eval=FALSE,echo=TRUE}
+p <- economics_long %>% 
+  ggplot(aes(x = date,y = value01,color=value01)) + 
+  geom_point()
 ```
 
-]
 
----
-.left-column[
-### Data
-### Mapeos
-### Geometrías
-## Escalas
+```{r,echo=FALSE}
+p <- economics_long %>% 
+  ggplot(aes(x = date,y = value01,color=value01)) + 
+  geom_point() +
+  theme_void() +
+  theme(legend.position="bottom",
+        legend.title = element_blank())
+```
 
-`scale_*_*()`
+```{r patchwork,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.7), dev="svg"}
+library(patchwork)
+p + labs(title = "RColorBrewer", subtitle = "p") +
+  (p + scale_color_viridis_c() + labs(title = "viridis",
+                                      subtitle = "p+scale_color_viridis_c()")) +
+  (p + colorspace::scale_color_continuous_diverging(palette = "Blue-Red",
+                                                 mid = 0.5) +
+     labs(title = "colorspace", 
+          subtitle = "p+scale_color_continuous_diverging(mid=0.5)")) +
+  plot_layout(widths = c(1, 1, 1.3))
+```
 
-]
-.right-column[
-Usually you will use **scales** to change the **color** and **fill** of your data. 
-
-`ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
-
-There are additional R packages that provide more color palettes:
-
-- **[`viridis`](https://github.com/sjmgarnier/viridis)**. color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness. These re the new color maps from [Matplotib](https://matplotlib.org/).
-- **[`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html)**. The HCL space (= polar coordinates in CIELUV) is particularly useful for specifying individual colors and color palettes as its three axes match those of the human visual system very well: Hue (= type of color, dominant wavelength), chroma (= colorfulness), luminance (= brightness). All HCL-based color palettes in the colorspace package (Zeileis et al. 2019) are also provided as discrete, continuous, and binned color scales for the use with the ggplot2 package (Wickham 2016; Wickham et al. 2020).
-]
+![](`r knitr::fig_chunk("patchwork", "svg")`)
 
 ```{r,eval=FALSE,echo=FALSE}
+# `ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
+# 
+# ```{r, fig.dim=c(7,8), dev="png", out.width="50%", fig.align="center", echo=FALSE}
+# RColorBrewer::display.brewer.all()
+# ```
+```
+
+
+]
+
+
+```{r,eval=FALSE,echo=FALSE}
+
+# 
+# ---
+# .left-column[
+# ### Data
+# ### Mapeos
+# ### Geometrías
+# ## Escalas
+# 
+# `scale_*_*()`
+# 
+# ]
+# .right-column[
+# Usually you will use **scales** to change the **color** and **fill** of your data. 
+# 
+# `ggplot2` has some built in color palettes and also provides wrapper functions to the [`RColorBrewer`](https://cran.r-project.org/web/packages/RColorBrewer/index.html) (`scale_fill_brewer`, `scale_color_brewer`). 
+# 
+# There are additional R packages that provide more color palettes:
+# 
+# - **[`viridis`](https://github.com/sjmgarnier/viridis)**. color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness. These re the new color maps from [Matplotib](https://matplotlib.org/).
+# - **[`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html)**. The HCL space (= polar coordinates in CIELUV) is particularly useful for specifying individual colors and color palettes as its three axes match those of the human visual system very well: Hue (= type of color, dominant wavelength), chroma (= colorfulness), luminance (= brightness). All HCL-based color palettes in the colorspace package (Zeileis et al. 2019) are also provided as discrete, continuous, and binned color scales for the use with the ggplot2 package (Wickham 2016; Wickham et al. 2020).
+# ]
+
 # <!-- - **[`ggsci`](https://github.com/nanxstats/ggsci)**. Offers a collection of ggplot2 color palettes inspired by scientific journals, data visualization libraries, science fiction movies, and TV shows. -->
 # <!-- - **[`gameoftrhones`](https://github.com/aljrico/gameofthrones)**. This package provides a round of palettes inspired by the Game of Thrones TV show. -->
 # <!-- - **[`palettetown`](https://github.com/timcdlucas/palettetown)**. An R package providing pokemon colour palettes. -->
@@ -1032,13 +1072,13 @@ There are additional R packages that provide more color palettes:
 layout: false
 class: inverse, middle, center
 
-## Time for more advanced functions!
+## ¡Tiempo para funciones más avanzadas!
 
 ---
 layout: true
 class: left, top
 
-## Advanced `ggplot2` 
+## `ggplot2` avanzado
 
 ---
 class: highlight
@@ -1060,7 +1100,7 @@ ggplot(iris,
 #### Escalas
 ]
 .pull-right[
-### Statistical transformations
+### Transformaciones estadísticas
 ]
 ]
 .right-plot[
@@ -1070,15 +1110,15 @@ ggplot(iris,
 
 ---
 .left-column[
-## Statistical transformations
+## Transformaciones estadísticas
 `stat_*()`
 ]
 
 .right-column[
-The `stat` functions and parameters perform statistical transformations on your data, for example:. 
+La función `stat` y parámetros realizar transformación en tu data, por ejemplo:
 
-- Plotting the **mean**  of your data points.
-- Plotting the **standard error** of the mean of your data points.
+- Graficar el **promedio**  de puntos.
+- Graficar el **error estandar** del promedio de puntos.
 
 ```{r, fig.dim=c(5, 3), dev="svg", out.width="50%", fig.align="center"}
 ggplot(iris, aes(Species, Petal.Width)) +
@@ -1088,31 +1128,35 @@ ggplot(iris, aes(Species, Petal.Width)) +
 ```
 ]
 
----
-.left-code[
-### **Example 5**: Plot the _mean average ratings per season_ for each _TV series_.
-```{r example-5, fig.show="hide"}
-ggplot(df,
-       aes(factor(season_number), average_rating,
-           color=tvseries_title, 
-           fill=tvseries_title)) +
-  geom_jitter(width=0.2, alpha=0.5) +
-  stat_summary(aes(group=tvseries_title), 
-               fun=mean, geom="line",
-               size=1) +
-  stat_summary(fun=mean, geom="point", 
-               size=4, pch=21, color="black") +
-  palettetown::scale_color_poke(pokemon="charizard", 
-                                name="TV series") +
-  palettetown::scale_fill_poke(pokemon="charizard",
-                               name="TV series") +
-  xlab("Season number") + ylab("Average rating")
-```  
-]
+```{r,eval=FALSE,echo=FALSE}
+# ---
+# .left-code[
+# ### **Example 5**: Plot the _mean average ratings per season_ for each _TV series_.
+# ```{r example-5, fig.show="hide"}
+# ggplot(df,
+#        aes(factor(season_number), average_rating,
+#            color=tvseries_title, 
+#            fill=tvseries_title)) +
+#   geom_jitter(width=0.2, alpha=0.5) +
+#   stat_summary(aes(group=tvseries_title), 
+#                fun=mean, geom="line",
+#                size=1) +
+#   stat_summary(fun=mean, geom="point", 
+#                size=4, pch=21, color="black") +
+#   palettetown::scale_color_poke(pokemon="charizard", 
+#                                 name="TV series") +
+#   palettetown::scale_fill_poke(pokemon="charizard",
+#                                name="TV series") +
+#   xlab("Season number") + ylab("Average rating")
+# ```  
+# ]
+# 
+# .right-plot[
+# ![](`r knitr::fig_chunk("example-5", "svg")`)  
+# ]
+# 
+```
 
-.right-plot[
-![](`r knitr::fig_chunk("example-5", "svg")`)  
-]
 
 ---
 class: highlight
@@ -1135,8 +1179,8 @@ ggplot(iris,
 #### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-### Coordinate systems
+#### Transformaciones estadísticas
+### Sistemas de coordenadas
 ]
 ]
 .right-plot[
@@ -1145,55 +1189,58 @@ ggplot(iris,
 
 ---
 .left-column[
-### Statistical transformations
-## Coordinate systems
+### Transformaciones estadísticas
+## Sistemas de coordenadas
 `coord_*()`
 ]
 
 .right-column[
-The **coordinate systems** define how the x and y combine to position the elements in the plot. 
+El **sistema de coordenadas** define cómo el ejes x y eje y se combinan a posicionar los elementos del gráfico.
 
-The default coordinate system is **cartesian** (`coord_cartesian()`) and several functions can modify it:
-- `coord_fixed()` maintains the same "aspect ratio" for the x and y axis.
-- `coord_flip()` flips the x and y coordinates.
+El sistema de coordenadas por defecto es el **cartesiano** (`coord_cartesian()`) y varias funciones pueden modificarlo:
+- `coord_fixed()` mantiene el mismo "aspect ratio" para eje x y eje y.
+- `coord_flip()` gira 90° el eje de coordenadas.
 
-You can also transform your da to polar coordinates using `coord_polar()`.
+También pueden transformar tu data a coordenadas polares con `coord_polar()`.
 ]
 
----
-.left-code[
-### **Example 6**: Zoom into an specific region of the plot.
-```{r example-6, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating")
-```  
-]
+```{r,echo=FALSE,eval=FALSE}
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 6**: Zoom into an specific region of the plot. -->
+# <!-- ```{r example-6, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=tvseries_title)) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="TV series") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") -->
+# <!-- ```   -->
+# <!-- ] -->
+# 
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-6", "svg")`)   -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 6**: Zoom into an specific region of the plot. -->
+# <!-- ```{r example-6-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=tvseries_title)) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="TV series") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") + -->
+# <!--  {{coord_cartesian(xlim=c(0,500), ylim=c(7,9))}} -->
+# <!-- ```   -->
+# <!-- ] -->
+# 
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-6-corrected", "svg")`)   -->
+# <!-- ] -->
+```
 
-.right-plot[
-![](`r knitr::fig_chunk("example-6", "svg")`)  
-]
-
----
-.left-code[
-### **Example 6**: Zoom into an specific region of the plot.
-```{r example-6-corrected, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating") +
- {{coord_cartesian(xlim=c(0,500), ylim=c(7,9))}}
-```  
-]
-
-.right-plot[
-![](`r knitr::fig_chunk("example-6-corrected", "svg")`)  
-]
 
 ---
 class: highlight
@@ -1217,9 +1264,9 @@ ggplot(iris,
 #### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-### Facets
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+### Paneles (facet)
 ]
 ]
 .right-plot[
@@ -1228,19 +1275,19 @@ ggplot(iris,
 
 ---
 .left-column[
-### Statistical transformations
-### Coordinate systems
-## Facets
+### Transformaciones estadísticas
+### Sistemas de coordenadas
+## Paneles (facet)
 `facet_*()`
 ]
 
 .right-column[
-Faceting generates different plots displaying different **subsets** of the data using a **discrete variable**.
+Los Paneles (facet) generan gráficos mostrando diferentes **subconjuntos** de la data usando una **variable discreta**.
 
-There are two main functions for faceting:
+Hay dos principales funciones para crear paneles (facet):
 
-- `facet_grid()`. Lay out panels in a grid using two discrete variables (`variable1 ~ variable2`).
-- `facet_wrap()`. Creates a ribbon of panels displaying selecting the different values for your discrete variable.
+- `facet_grid()`. Muestra paneles en una grilla usando __dos__ variables discretas (`variable1 ~ variable2`).
+- `facet_wrap()`. Crea una serie de paneles mostrando seleciones de diferentes valores para tu variable discreta.
 
 ]
 
@@ -1305,10 +1352,10 @@ ggplot(iris,
 #### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-#### Facets
-### Themes
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+### Temas
 ]
 ]
 .right-plot[
@@ -1318,51 +1365,53 @@ ggplot(iris,
 
 ---
 .left-column[
-### Statistical transformations
-### Coordinate systems
-### Facets
-## Themes
+### Transformaciones estadísticas
+### Sistemas de coordenadas
+### Paneles (facet)
+## Temas
 `theme`
 ]
 
 .right-column[
-**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
 
-#### Complete themes
+**Temas** ayudan a cambiar la apariencia completa de tu gráfico (solo elementos que no están mapeados de la data).
 
-You can find theme functions that change completely the look of the plot. Within `ggplot2` there are a few: `theme_bw()`, `theme_dark()`, `theme_gray()`, `theme_light()`, `theme_minimal()`.
+#### Temas completos
 
-There are additional packages that include other themes for `ggplot2`:
+Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_dark()`, `theme_gray()`, `theme_light()`, `theme_minimal()`.
 
-- [`ggthemes`](https://github.com/jrnold/ggthemes). Additional themes, scales, and geoms for ggplot2.
-- [`tvthemes`](https://github.com/Ryo-N7/tvthemes). ggplot2 themes and palettes based on your favorite TV shows.
-- [`hrbrthemes`](https://github.com/hrbrmstr/hrbrthemes/).  Opinionated, typographic-centric ggplot2 themes and theme components.
-- [`vapoRwave`](https://github.com/moldach/vapoRwave/). Vaporwave themes and color palettes for ggplot2
+```{r,eval=FALSE,echo=FALSE}
+# <!-- There are additional packages that include other themes for `ggplot2`: -->
+# 
+# <!-- - [`ggthemes`](https://github.com/jrnold/ggthemes). Additional themes, scales, and geoms for ggplot2. -->
+# <!-- - [`tvthemes`](https://github.com/Ryo-N7/tvthemes). ggplot2 themes and palettes based on your favorite TV shows. -->
+# <!-- - [`hrbrthemes`](https://github.com/hrbrmstr/hrbrthemes/).  Opinionated, typographic-centric ggplot2 themes and theme components. -->
+# <!-- - [`vapoRwave`](https://github.com/moldach/vapoRwave/). Vaporwave themes and color palettes for ggplot2 -->
+```
 
-**Complete themes** are a nice way of changing the overall look of your plot with one single function!
+**Temas completos** son una forma elegante de cambiar la apariencia del gráfico con una sola función!
 ]
 
 ---
 .left-column[
-### Statistical transformations
-### Coordinate systems
-### Facets
-## Themes
+### Transformaciones estadísticas
+### Sistemas de coordenadas
+### Paneles (facet)
+## Temas
 `theme`
 ]
 
 .right-column[
-**Themes** allow you to tweak the overall look of the plot (only the elements that are not mapped to data).
+**Temas** ayudan a cambiar la apariencia completa de tu gráfico (solo elementos que no están mapeados de la data).
 
-#### Specific theme elements
-You can also change specific theme elements, such as the legend position, the size of the axis titles or the width of the axis lines by using the `theme()` function with the necessary arguments.
+#### Elementos específicos del tema
+Dentro de la función `theme()` puedes cambiar la __posición de la leyenda__, el __tamaño de los títulos__ de los ejes o el __ancho de la línea__ de los ejes.
 
 - `legend.position=c("none", "top", "right", "bottom", "left")`
 - `axis.title=element_text(size=9)`
 - `axis.line=element_line(size=2)`
 
-
-You can check all the possible arguments you can pass to the `theme()` function [here](https://ggplot2.tidyverse.org/reference/theme.html).
+Ver más argumentos de la función `theme()` [aquí](https://ggplot2.tidyverse.org/reference/theme.html).
 ]
 
 ---
@@ -1496,11 +1545,11 @@ ggplot(iris,
 #### Escalas
 ]
 .pull-right[
-#### Statistical transformations
-#### Coordinate systems
-#### Facets
-#### Themes
-### Annotation
+#### Transformaciones estadísticas
+#### Sistemas de coordenadas
+#### Paneles (facet)
+#### Temas
+### Anotaciones
 ]
 ]
 .right-plot[
@@ -1509,33 +1558,35 @@ ggplot(iris,
 
 ---
 .left-column[
-### Statistical transformations
-### Coordinate systems
-### Facets
-### Themes
-## Annotations
+### Transformaciones estadísticas
+### Sistemas de coordenadas
+### Paneles (facet)
+### Temas
+## Anotaciones
 `annotate`
 ]
 
 .right-column[
-Allows annotation of different types of `geom` by manually inputing the x and y values for the annotation.
+Permite la anotación de diferentes tipos de `geom` manualmente dando su posición en eje x y eje y.
 
-You just need to add the funcion `annotate()` with the `geom` you want to use and the `x` and `y` coordinates where it should be drawn.
+Solo necesitas agregar la función `annotate()` con el `geom` que quieres usar y las coordinadas eje x y eje y, donde serán dibujadas. 
 
-If you have used `facet_*()` the annotation will be displayed in all the panels!
+¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
 ]
 
 ---
 layout: false
 class: left, middle
 
-## Saving your `ggplot2` graphs 
+## Grabando gráficos `ggplot2`
 
-The function needed for saving ggplot graphs is `ggsave()`. 
+La función  `ggsave()` permite grabar los gráficos ggplot
 
-By default, it will save the last plot you generated in the specified file `filename`. It will automatically extract the corredct format from your `filname` suffix ("png", "pdf", "svg" among others). 
+Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
 
-Check all options typing `?ggsave`
+Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
+
+Ver más detalles en `?ggsave`
 
 ```{r, eval=FALSE}
 ggsave(filename="plot_example.png")
@@ -1706,7 +1757,7 @@ ggsave(filename="plot_example.png")
 ---
 class: inverse, center, middle
 
-# The end
+# Fin
 
 ```{r, out.width="50%", echo=FALSE}
 knitr::include_graphics("https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif")
