@@ -1,8 +1,8 @@
 ---
 title: "Mejora tus gráficos con `ggplot2`"
 subtitle: "⚔<br/>R-Ladies Barcelona Workshop"
-author: "Mireia Ramos-Rodríguez<br/>(adaptado al español por Andree Valle Campos)"
-date: "`r Sys.Date()`"
+author: "Mireia Ramos-Rodríguez"
+date: "`r Sys.Date()`<br/><br/>(adaptado al español por Andree Valle Campos)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -113,6 +113,25 @@ layout: true
 class: left, top
 
 ## Construyendo gráficos una capa por tiempo
+
+---
+.left-code[
+```{r gg-canvas0,eval=FALSE}
+iris
+```
+
+### Data
+
+]
+.right-plot[
+```{r gg-canvas00,echo=FALSE}
+iris %>% 
+  kable("html", row.names=FALSE) %>% 
+  kable_styling(font_size = 18)  %>%  
+  scroll_box(height = "500px")
+```
+]
+
 
 ---
 .left-code[
@@ -339,7 +358,7 @@ class: inverse, middle, center
 layout: true
 class: left, top
 
-## `ggplot2` Básico
+## `ggplot2` básico
 
 ---
 class: highlight
@@ -367,16 +386,16 @@ ggplot(iris)
 
 .right-column[
 
-El primer paso para graficar es tener tu data en formato __tidy__ (largo):
+El primer paso para graficar es tener tu data en formato __"limpio"__ (_"tidy"_):
 
-1. Cada __variable__ es una __column__.
-2. Cada __observation__ es una __row__.
+1. Cada __variable__ es una __columna__.
+2. Cada __observation__ es una __fila__.
 
 .pull-left[
 
-#### Formato Wide (messy) 
+#### Formato ancho ("sucio") 
 
-Drug | Response.CTRL | Response.T1D
+Droga | Respuesta.CTRL | Respuesta.T1D
 -----|---------------|----------------
 A	| 3	| 12
 B | 6 |	56
@@ -386,9 +405,9 @@ C	| 8 |	2
 
 .pull-right[
 
-#### formato Long (tidy) 
+#### Formato largo ("limpio") 
 
-Drug | Patient | Response
+Droga | Paciente | Respuesta
 -----|---------|----------
 A |	CTRL | 3
 B	| CTRL | 6
@@ -436,6 +455,7 @@ ggplot(iris,
 .right-plot[
 ![](`r knitr::fig_chunk("gg-canvas2", "svg")`)
 ]
+
 ---
 .left-column[
 ### Data
@@ -454,7 +474,7 @@ Todo Mapeo necesita ser definida dentro de una función `aes()`.
 
 Puedes definir Mapeos para:
 - **gráfico completo** incluyéndolo en la función `ggplot()`.
-- **geometría específica** incluyéndolo en la función `geom_XXX()`.
+- **geometría específica** incluyéndolo en la función `geom_xxx()`.
 ]
 
 ---
@@ -523,14 +543,14 @@ ggplot(iris, aes(Species, Petal.Width, fill=Species, color=Species)) +
   theme_void() + theme(legend.position="none")
 ```
 
-Type       | Function           | Image
+Tipo       | Función           | Imagen
 -----------|--------------------|-----------------------------------------------
-Point      | `geom_point()`     | ![](`r knitr::fig_chunk("geom-point", "svg")`)
-Line       | `geom_line()`      | ![](`r knitr::fig_chunk("geom-line", "svg")`)
-Bar        | `geom_bar()`       | ![](`r knitr::fig_chunk("geom-bar", "svg")`)
-Histogram  | `geom_histogram()` | ![](`r knitr::fig_chunk("geom-hist", "svg")`)
-Regression | `geom_smooth()`    | ![](`r knitr::fig_chunk("geom-smooth", "svg")`)
-Boxplot    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
+Punto      | `geom_point()`     | ![](`r knitr::fig_chunk("geom-point", "svg")`)
+Linea       | `geom_line()`      | ![](`r knitr::fig_chunk("geom-line", "svg")`)
+Barra        | `geom_bar()`       | ![](`r knitr::fig_chunk("geom-bar", "svg")`)
+Histograma  | `geom_histogram()` | ![](`r knitr::fig_chunk("geom-hist", "svg")`)
+Regresión | `geom_smooth()`    | ![](`r knitr::fig_chunk("geom-smooth", "svg")`)
+Cajas    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
 ]
 
 ---
@@ -803,7 +823,7 @@ class: inverse, middle, center
 layout: true
 class: left, top
 
-## `ggplot2` Básico
+## `ggplot2` básico
 
 ---
 class: highlight
@@ -841,19 +861,19 @@ ggplot(iris,
 ]
 
 .right-column[
-Adjusts the scales for your different aesthetic paramaters:
+Ajusta las escalas para los diferentes parámetros estéticos (Mapeos):
 
-`scale` + `<aes>` + `<type>`, where:
+`scale` + `<aes>` + `<type>`, donde:
 
-- `<aes>` indicates the parameter you want to modify (_y_, _color_, _shape_)
-- `<type>` indicates what type of variable `<aes>` is (or the modification you want to perform).
+- `<aes>` indica el parámetro que quieres modificar (_x_, _y_, _color_, _shape_)
+- `<type>` indica qué tipo de variable `<aes>` es (o la modificación a realizar).
 
-Some examples:
+Algunos ejemplos:
 
-- `scale_x_discrete()` allows you to modify your discrete __x axis__.
-- `scale_y_continuous()` allows you to modify your continuous __y axis__. 
-- `scale_color_manual()` if you want to manually adjust the __colors__ of your discrete variable.
-- `scale_fill_gradient()` allows you to adjut the colors of your __fill__ gradient (for a continuous variable).
+- `scale_x_discrete()` modifica el __eje x__ discreto.
+- `scale_y_continuous()` modifica el __eje y__ continuo. 
+- `scale_color_grey()` modifica el __color__ a una escala de grises.
+- `scale_fill_gradient()` ajusta el color de __relleno__ en gradiente.
 ]
 
 ---
@@ -864,6 +884,7 @@ Some examples:
 ## Escalas
 
 `scale_*_*()`
+
 ]
 .right-column[
 Usually you will use **scales** to change the **color** and **fill** of your data. 
@@ -884,6 +905,7 @@ RColorBrewer::display.brewer.all()
 ## Escalas
 
 `scale_*_*()`
+
 ]
 .right-column[
 Usually you will use **scales** to change the **color** and **fill** of your data. 
@@ -894,6 +916,7 @@ There are additional R packages that provide more color palettes:
 
 - **[`viridis`](https://github.com/sjmgarnier/viridis)**. color maps are designed in such a way that they will analytically be perfectly perceptually-uniform, both in regular form and also when converted to black-and-white. They are also designed to be perceived by readers with the most common form of color blindness. These re the new color maps from [Matplotib](https://matplotlib.org/).
 - **[`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html)**. The HCL space (= polar coordinates in CIELUV) is particularly useful for specifying individual colors and color palettes as its three axes match those of the human visual system very well: Hue (= type of color, dominant wavelength), chroma (= colorfulness), luminance (= brightness). All HCL-based color palettes in the colorspace package (Zeileis et al. 2019) are also provided as discrete, continuous, and binned color scales for the use with the ggplot2 package (Wickham 2016; Wickham et al. 2020).
+]
 
 ```{r,eval=FALSE,echo=FALSE}
 # <!-- - **[`ggsci`](https://github.com/nanxstats/ggsci)**. Offers a collection of ggplot2 color palettes inspired by scientific journals, data visualization libraries, science fiction movies, and TV shows. -->
