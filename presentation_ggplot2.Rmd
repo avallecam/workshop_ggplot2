@@ -2,7 +2,7 @@
 title: "Mejora tus gráficos con `ggplot2`"
 subtitle: "⚔<br/>R-Ladies Barcelona Workshop"
 author: "Mireia Ramos-Rodríguez"
-date: "`r Sys.Date()`<br/><br/>(adaptado al español por Andree Valle Campos)"
+date: "`r Sys.Date()`<br/><br/>(adaptado al español y modificado por Andree Valle Campos)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -464,17 +464,31 @@ ggplot(iris,
 ]
 
 .right-column[
-El argumento __aesthetics__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros.
+El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros __dentro de__ la función `aes()`:
 
 - Variable 1 → **x**
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
 
-Todo Mapeo necesita ser definida dentro de una función `aes()`.
-
 Puedes definir Mapeos para:
 - **gráfico completo** incluyéndolo en la función `ggplot()`.
 - **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+```{r,eval=FALSE}
+# para gráfico completo o global
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+               {{color=Species)) +}}
+  geom_point() + 
+  geom_line()
+
+# para geometría específica
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() +
+{{geom_line(aes(color=Species))}}
+```
+
+¡Veremos cómo se ven luego de 3 diapositivas!
+
 ]
 
 ---
@@ -569,6 +583,54 @@ Estas son algunas de las funciones `geom_*` disponibles:
 ```{r, echo=FALSE}
 lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 ```
+]
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Así quedarían las **geometrías** al usar el **mapeo** completo y específico:
+
+```{r,eval=FALSE}
+# para gráfico completo o global
+A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                    {{color=Species)) +}}
+     geom_point() + 
+     geom_line()
+
+# para geometría específica
+B <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+     geom_point() +
+   {{geom_line(aes(color=Species))}}
+```
+
+```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.7), dev="svg"}
+# para gráfico completo o global
+a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
+  geom_point() + 
+  geom_line() +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() + 
+  geom_line(aes(color=Species)) +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+library(patchwork)
+a + labs(title = "(A) mapeo global") +
+  (b + labs(title = "(B) mapeo específico"))
+```
+
+![](`r knitr::fig_chunk("mapeo01", "svg")`)
+
 ]
 
 ---
@@ -817,7 +879,7 @@ class: inverse, middle, center
 layout: false
 class: inverse, middle, center
 
-## De retorno a lo básico
+## Un breve pasito intermedio
 
 ---
 layout: true
@@ -894,31 +956,37 @@ Usualmente se usan **scales** para cambiar el **color** y **fill** de tu data
 Recomendamos usar [`viridis`](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) y [`colorspace`](https://colorspace.r-forge.r-project.org/articles/ggplot2_color_scales.html#available-palettes-1), diseñados para ser __uniformes__ a la percepción y con escalas __inclusivas__ a disfunciones visuales como el daltonismo.
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- economics_long %>% 
-  ggplot(aes(x = date,y = value01,color=value01)) + 
-  geom_point()
+p <- ggplot(faithfuld, 
+            aes(x = waiting, y = eruptions)) +
+     geom_raster(aes(fill = density))
 ```
 
 
 ```{r,echo=FALSE}
-p <- economics_long %>% 
-  ggplot(aes(x = date,y = value01,color=value01)) + 
-  geom_point() +
+p <- ggplot(faithfuld, aes(waiting, eruptions)) +
+ geom_raster(aes(fill = density)) +
   theme_void() +
   theme(legend.position="bottom",
         legend.title = element_blank())
+
+# p <- economics_long %>% 
+#   ggplot(aes(x = date,y = value01,color=value01)) + 
+#   geom_point() +
+#   theme_void() +
+#   theme(legend.position="bottom",
+#         legend.title = element_blank())
 ```
 
 ```{r patchwork,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.7), dev="svg"}
 library(patchwork)
 p + labs(title = "RColorBrewer", subtitle = "p") +
-  (p + scale_color_viridis_c() + labs(title = "viridis",
-                                      subtitle = "p+scale_color_viridis_c()")) +
-  (p + colorspace::scale_color_continuous_diverging(palette = "Blue-Red",
-                                                 mid = 0.5) +
+  (p + scale_fill_viridis_c() + labs(title = "viridis",
+                                      subtitle = "p+scale_fill_viridis_c()")) +
+  (p + colorspace::scale_fill_continuous_diverging(palette = "Blue-Red",
+                                                 mid = 0.02) +
      labs(title = "colorspace", 
-          subtitle = "p+scale_color_continuous_diverging(mid=0.5)")) +
-  plot_layout(widths = c(1, 1, 1.3))
+          subtitle = "p+scale_fill_continuous_diverging(mid=0.5)")) +
+  plot_layout(widths = c(1, 1, 1.05))
 ```
 
 ![](`r knitr::fig_chunk("patchwork", "svg")`)
@@ -1072,6 +1140,12 @@ p + labs(title = "RColorBrewer", subtitle = "p") +
 layout: false
 class: inverse, middle, center
 
+# ¡Más ejemplos y ejercicios!
+
+---
+layout: false
+class: inverse, middle, center
+
 ## ¡Tiempo para funciones más avanzadas!
 
 ---
@@ -1115,7 +1189,7 @@ ggplot(iris,
 ]
 
 .right-column[
-La función `stat` y parámetros realizar transformación en tu data, por ejemplo:
+La función `stat` y sus parámetros realizan la transformación en tu data, por ejemplo:
 
 - Graficar el **promedio**  de puntos.
 - Graficar el **error estandar** del promedio de puntos.
@@ -1195,13 +1269,38 @@ ggplot(iris,
 ]
 
 .right-column[
-El **sistema de coordenadas** define cómo el ejes x y eje y se combinan a posicionar los elementos del gráfico.
+El **sistema de coordenadas** define cómo los ejes (x,y) se combinan a posicionar los elementos del gráfico.
 
 El sistema de coordenadas por defecto es el **cartesiano** (`coord_cartesian()`) y varias funciones pueden modificarlo:
-- `coord_fixed()` mantiene el mismo "aspect ratio" para eje x y eje y.
+- `coord_fixed()` mantiene el mismo "aspect ratio" para ambos ejes (x,y).
 - `coord_flip()` gira 90° el eje de coordenadas.
+- `coord_polar()` transformar tu data a coordenadas polares. 
 
-También pueden transformar tu data a coordenadas polares con `coord_polar()`.
+```{r,eval=FALSE,echo=TRUE}
+p <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+     geom_bar(width = 1)
+```
+
+```{r,echo=FALSE}
+p <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+  geom_bar(width = 1) +
+  theme_void() +
+  theme(legend.position="bottom",
+        legend.title = element_blank())
+```
+
+```{r patchwork02,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.3), dev="svg"}
+library(patchwork)
+p + labs(title = "p") +
+  (p + coord_flip() + labs(title = "p + coord_flip()")) +
+  (p + coord_polar(theta = "y") +
+     labs(title = "p + coord_polar(theta = 'y')" )) +
+  plot_layout(widths = c(1, 1, 1.05))
+```
+
+![](`r knitr::fig_chunk("patchwork02", "svg")`)
+
+
 ]
 
 ```{r,echo=FALSE,eval=FALSE}
@@ -1286,48 +1385,75 @@ Los Paneles (facet) generan gráficos mostrando diferentes **subconjuntos** de l
 
 Hay dos principales funciones para crear paneles (facet):
 
-- `facet_grid()`. Muestra paneles en una grilla usando __dos__ variables discretas (`variable1 ~ variable2`).
-- `facet_wrap()`. Crea una serie de paneles mostrando seleciones de diferentes valores para tu variable discreta.
+- `facet_grid()`. Crea paneles en grilla usando __dos__ variables discretas (`var1 ~ var2`).
+- `facet_wrap()`. Crea serie de paneles con selecciones según __una__ variable discreta.
+
+```{r,eval=FALSE,echo=TRUE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point()
+```
+
+```{r,echo=FALSE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point() +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        legend.title = element_blank())
+```
+
+```{r patchwork03,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 3.1), dev="svg"}
+library(patchwork)
+p + labs(title = "p") +
+  (p + facet_grid(cyl~drv) + labs(title = "p + facet_grid(cyl~drv)")) +
+  (p + facet_wrap(~cyl) +
+     labs(title = "p + facet_wrap(~cyl)" )) +
+  plot_layout(widths = c(1, 1, 1))
+```
+
+![](`r knitr::fig_chunk("patchwork03", "svg")`)
+
 
 ]
 
----
-.left-code[
-### **Example 7**: Add classification according to the TV series title.
-```{r example-7, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=factor(season_number))) +
-  scale_color_brewer(palette="Set1", 
-                     name="Season") +
-  xlab("# of votes") + ylab("Average rating") +
-  ylim(0,10)
-```  
-]
+```{r,eval=FALSE,echo=FALSE}
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 7**: Add classification according to the TV series title. -->
+# <!-- ```{r example-7, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=factor(season_number))) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="Season") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") + -->
+# <!--   ylim(0,10) -->
+# <!-- ```   -->
+# <!-- ] -->
+# 
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-7", "svg")`)   -->
+# <!-- ] -->
+# 
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 7**: Add classification according to the TV series title. -->
+# <!-- ```{r example-7-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=factor(season_number))) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="Season") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") + -->
+# <!--   ylim(0,10) + -->
+# <!--  {{facet_wrap(~tvseries_title, scales="free_x")}} -->
+# <!-- ```   -->
+# <!-- ] -->
+# 
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-7-corrected", "svg")`)   -->
+# <!-- ] -->
 
-.right-plot[
-![](`r knitr::fig_chunk("example-7", "svg")`)  
-]
+```
 
-
----
-.left-code[
-### **Example 7**: Add classification according to the TV series title.
-```{r example-7-corrected, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=factor(season_number))) +
-  scale_color_brewer(palette="Set1", 
-                     name="Season") +
-  xlab("# of votes") + ylab("Average rating") +
-  ylim(0,10) +
- {{facet_wrap(~tvseries_title, scales="free_x")}}
-```  
-]
-
-.right-plot[
-![](`r knitr::fig_chunk("example-7-corrected", "svg")`)  
-]
 
 ---
 class: highlight
@@ -1573,6 +1699,12 @@ Solo necesitas agregar la función `annotate()` con el `geom` que quieres usar y
 
 ¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
 ]
+
+---
+layout: false
+class: inverse, middle, center
+
+# ¡Llegamos a lo último!
 
 ---
 layout: false

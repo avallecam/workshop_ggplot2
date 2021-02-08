@@ -19,7 +19,7 @@ class: center, middle, inverse, title-slide
 # Mejora tus gráficos con <code>ggplot2</code>
 ## ⚔<br/>R-Ladies Barcelona Workshop
 ### Mireia Ramos-Rodríguez
-### 2021-02-07<br/><br/>(adaptado al español por Andree Valle Campos)
+### 2021-02-07<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
 
 ---
 
@@ -1445,17 +1445,32 @@ ggplot(iris,
 ]
 
 .right-column[
-El argumento __aesthetics__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros.
+El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros __dentro de__ la función `aes()`:
 
 - Variable 1 → **x**
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
 
-Todo Mapeo necesita ser definida dentro de una función `aes()`.
-
 Puedes definir Mapeos para:
 - **gráfico completo** incluyéndolo en la función `ggplot()`.
 - **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+
+```r
+# para gráfico completo o global
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+*               color=Species)) +
+  geom_point() + 
+  geom_line()
+
+# para geometría específica
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() +
+*geom_line(aes(color=Species))
+```
+
+¡Veremos cómo se ven luego de 3 diapositivas!
+
 ]
 
 ---
@@ -1547,6 +1562,38 @@ Estas son algunas de las funciones `geom_*` disponibles:
 ```
 ]
 
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Así quedarían las **geometrías** al usar el **mapeo** completo y específico:
+
+
+```r
+# para gráfico completo o global
+A &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+*                    color=Species)) +
+     geom_point() + 
+     geom_line()
+
+# para geometría específica
+B &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+     geom_point() +
+*   geom_line(aes(color=Species))
+```
+
+
+
+![](presentation_ggplot2_files/figure-html/mapeo01-1.svg)
+
+]
+
 ---
 layout: false
 class: inverse, middle, center
@@ -1560,7 +1607,7 @@ class: inverse, middle, center
 layout: false
 class: inverse, middle, center
 
-## De retorno a lo básico
+## Un breve pasito intermedio
 
 ---
 layout: true
@@ -1639,9 +1686,9 @@ Recomendamos usar [`viridis`](https://cran.r-project.org/web/packages/viridis/vi
 
 
 ```r
-p &lt;- economics_long %&gt;% 
-  ggplot(aes(x = date,y = value01,color=value01)) + 
-  geom_point()
+p &lt;- ggplot(faithfuld, 
+            aes(x = waiting, y = eruptions)) +
+     geom_raster(aes(fill = density))
 ```
 
 
@@ -1659,6 +1706,12 @@ p &lt;- economics_long %&gt;%
 
 
 
+
+---
+layout: false
+class: inverse, middle, center
+
+# ¡Más ejemplos y ejercicios!
 
 ---
 layout: false
@@ -1708,7 +1761,7 @@ ggplot(iris,
 ]
 
 .right-column[
-La función `stat` y parámetros realizar transformación en tu data, por ejemplo:
+La función `stat` y sus parámetros realizan la transformación en tu data, por ejemplo:
 
 - Graficar el **promedio**  de puntos.
 - Graficar el **error estandar** del promedio de puntos.
@@ -1721,7 +1774,7 @@ ggplot(iris, aes(Species, Petal.Width)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-15-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-17-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 ]
 
 
@@ -1765,13 +1818,26 @@ ggplot(iris,
 ]
 
 .right-column[
-El **sistema de coordenadas** define cómo el ejes x y eje y se combinan a posicionar los elementos del gráfico.
+El **sistema de coordenadas** define cómo los ejes (x,y) se combinan a posicionar los elementos del gráfico.
 
 El sistema de coordenadas por defecto es el **cartesiano** (`coord_cartesian()`) y varias funciones pueden modificarlo:
-- `coord_fixed()` mantiene el mismo "aspect ratio" para eje x y eje y.
+- `coord_fixed()` mantiene el mismo "aspect ratio" para ambos ejes (x,y).
 - `coord_flip()` gira 90° el eje de coordenadas.
+- `coord_polar()` transformar tu data a coordenadas polares. 
 
-También pueden transformar tu data a coordenadas polares con `coord_polar()`.
+
+```r
+p &lt;- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+     geom_bar(width = 1)
+```
+
+
+
+
+
+![](presentation_ggplot2_files/figure-html/patchwork02-1.svg)
+
+
 ]
 
 
@@ -1822,50 +1888,25 @@ Los Paneles (facet) generan gráficos mostrando diferentes **subconjuntos** de l
 
 Hay dos principales funciones para crear paneles (facet):
 
-- `facet_grid()`. Muestra paneles en una grilla usando __dos__ variables discretas (`variable1 ~ variable2`).
-- `facet_wrap()`. Crea una serie de paneles mostrando seleciones de diferentes valores para tu variable discreta.
+- `facet_grid()`. Crea paneles en grilla usando __dos__ variables discretas (`var1 ~ var2`).
+- `facet_wrap()`. Crea serie de paneles con selecciones según __una__ variable discreta.
 
-]
-
----
-.left-code[
-### **Example 7**: Add classification according to the TV series title.
 
 ```r
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=factor(season_number))) +
-  scale_color_brewer(palette="Set1", 
-                     name="Season") +
-  xlab("# of votes") + ylab("Average rating") +
-  ylim(0,10)
+p &lt;- ggplot(mpg, aes(displ, cty)) + geom_point()
 ```
+
+
+
+
+
+![](presentation_ggplot2_files/figure-html/patchwork03-1.svg)
+
+
 ]
 
-.right-plot[
-![](presentation_ggplot2_files/figure-html/example-7-1.svg)  
-]
 
 
----
-.left-code[
-### **Example 7**: Add classification according to the TV series title.
-
-```r
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=factor(season_number))) +
-  scale_color_brewer(palette="Set1", 
-                     name="Season") +
-  xlab("# of votes") + ylab("Average rating") +
-  ylim(0,10) +
-* facet_wrap(~tvseries_title, scales="free_x")
-```
-]
-
-.right-plot[
-![](presentation_ggplot2_files/figure-html/example-7-corrected-1.svg)  
-]
 
 ---
 class: highlight
@@ -2037,6 +2078,12 @@ Solo necesitas agregar la función `annotate()` con el `geom` que quieres usar y
 
 ¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
 ]
+
+---
+layout: false
+class: inverse, middle, center
+
+# ¡Llegamos a lo último!
 
 ---
 layout: false
