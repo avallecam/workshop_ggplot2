@@ -485,10 +485,9 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width,
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_point() +
 {{geom_line(aes(color=Species))}}
+
+# ¡Veremos el resultado luego de 3 diapositivas!
 ```
-
-¡Veremos cómo se ven luego de 3 diapositivas!
-
 ]
 
 ---
@@ -610,7 +609,7 @@ B <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
    {{geom_line(aes(color=Species))}}
 ```
 
-```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.7), dev="svg"}
+```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.3), dev="svg"}
 # para gráfico completo o global
 a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
   geom_point() + 
