@@ -416,6 +416,36 @@ A	| T1D	| 23
 B	| T1D	| 56
 C	| T1D	| 2
 ]
+
+([Aquí](https://tidyr.tidyverse.org/reference/pivot_longer.html#examples) algunos ejemplos más)
+
+]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+El primer paso para graficar es tener tu data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observation__ es una __fila__.
+
+```{r gg-canvas0x,echo=FALSE}
+iris %>% 
+  kable("html", row.names=TRUE) %>% 
+  kable_styling(font_size = 18)  %>%  
+  scroll_box(height = "400px")
+```
+
+
 ]
 
 ```{r,eval=FALSE,echo=FALSE}
@@ -464,11 +494,20 @@ ggplot(iris,
 ]
 
 .right-column[
-El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros __dentro de__ la función `aes()`:
+El argumento __mapping__ indica cómo mapeamos la __columna de datos__ a elementos visuales o parámetros:
 
 - Variable 1 → **x**
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
+
+Los __nombres de columna__:
+
+- Deben especificarse __dentro de la función `aes()`__
+- No requieren de comillas :)
+
+Extra:
+
+- La función `aes()` es una contracción de _"aesthetics"_, __Estética__ en español.
 
 ]
 
@@ -1000,19 +1039,22 @@ ggplot(iris,
 ]
 
 .right-column[
-Ajusta las escalas para los diferentes parámetros estéticos (Mapeos):
+__Ajusta las escalas__ para los diferentes parámetros estéticos (Mapeos):
 
 `scale` + `<aes>` + `<type>`, donde:
 
-- `<aes>` indica el parámetro que quieres modificar (_x_, _y_, _color_, _shape_)
-- `<type>` indica qué tipo de variable `<aes>` es (o la modificación a realizar).
+- `<aes>` indica el __parámetro__ que quieres modificar (_x_, _y_, _color_, _shape_)
+- `<type>` indica: 
+  + qué __tipo de variable__ es `<aes>`, o
+  + la __modificación a realizar__.
 
 Algunos ejemplos:
 
-- `scale_x_discrete()` modifica el __eje x__ discreto.
-- `scale_y_continuous()` modifica el __eje y__ continuo. 
-- `scale_color_grey()` modifica el __color__ a una escala de grises.
-- `scale_fill_gradient()` ajusta el color de __relleno__ en gradiente.
+- `scale_x_discrete()` modifica el __eje x__ _discreto_.
+- `scale_y_continuous()` modifica el __eje y__ _continuo_. 
+- `scale_color_grey()` modifica el __color__ a una _escala de grises_.
+- `scale_fill_gradient()` ajusta el color de __relleno__ en _gradiente_.
+- `scale_x_log10()` transforma el __eje x__ a una _escala logarítmica en base 10_.
 ]
 
 ---
@@ -1062,7 +1104,7 @@ p + labs(title = "RColorBrewer", subtitle = "p") +
   (p + colorspace::scale_fill_continuous_diverging(palette = "Blue-Red",
                                                  mid = 0.02) +
      labs(title = "colorspace", 
-          subtitle = "p+scale_fill_continuous_diverging(mid=0.5)")) +
+          subtitle = "p+scale_fill_continuous_diverging(mid=0.2)")) +
   plot_layout(widths = c(1, 1, 1.05))
 ```
 
@@ -1231,17 +1273,23 @@ class: left, middle
 
 ## Grabando gráficos `ggplot2`
 
-La función  `ggsave()` permite grabar los gráficos ggplot
+La __función `ggsave()`__ permite grabar los gráficos ggplot
 
-Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
+Por defecto, grabará el último gráfico generado en el archivo especificado en el __argumento `filename`__.
 
-Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
+Automáticamente extraerá el __formato del sufijo en `filename`__ ("png", "pdf", "svg" entre otros)
 
 Ver más detalles en `?ggsave`
 
 ```{r, eval=FALSE}
 ggsave(filename="plot_example.png")
 ```
+
+---
+layout: false
+class: inverse, middle, center
+
+# Ahora sí...
 
 
 ---
@@ -1250,9 +1298,20 @@ class: inverse, center, middle
 # Fin
 
 ```{r, out.width="50%", echo=FALSE}
-knitr::include_graphics("https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif")
+knitr::include_graphics("https://media.giphy.com/media/QW5nKIoebG8y4/giphy.gif")
 ```
 
+---
+layout: false
+class: inverse, middle, center
+
+## ¡otra! ¡otra! ¡otra! 
+
+---
+layout: false
+class: inverse, middle, center
+
+## si deseas continuar...
 
 ---
 layout: false
@@ -1297,11 +1356,52 @@ ggplot(iris,
 ---
 .left-column[
 ## Transformaciones estadísticas
+`geom_*()`
+]
+
+.right-column[
+Algunas __funciones `geom`__ pueden realizar __resumenes estadísticos__ en tu data, por ejemplo:
+
+- Ajustar una **regresión lineal**.
+- Ajustar una **regresión no-lineal**.
+
+```{r,eval=FALSE,echo=TRUE}
+p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+```{r,echo=FALSE}
+p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  theme_void() +
+  theme(legend.position="bottom",
+        legend.title = element_blank())
+```
+
+```{r patchwork02x,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.3), dev="svg"}
+library(patchwork)
+p + labs(title = "p") +
+  (p + geom_smooth(method = "lm") + 
+    labs(title = "p+geom_smooth(method = 'lm')")) +
+  (p + geom_smooth(method = "loess") +
+     labs(title = "p+geom_smooth(method = 'loess')" )) +
+  plot_layout(widths = c(1, 1, 1.05))
+```
+
+![](`r knitr::fig_chunk("patchwork02x", "svg")`)
+
+
+]
+
+
+---
+.left-column[
+## Transformaciones estadísticas
 `stat_*()`
 ]
 
 .right-column[
-La función `stat` y sus parámetros realizan la transformación en tu data, por ejemplo:
+Pero la __función `stat`__ y sus parámetros __realizan la transformación__ en tu data, por ejemplo:
 
 - Graficar el **promedio**  de puntos.
 - Graficar el **error estandar** del promedio de puntos.
@@ -1313,6 +1413,7 @@ ggplot(iris, aes(Species, Petal.Width)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 ]
+
 
 ```{r,eval=FALSE,echo=FALSE}
 # ---
@@ -1628,6 +1729,30 @@ Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_da
 ```
 
 **Temas completos** son una forma elegante de cambiar la apariencia del gráfico con una sola función!
+
+
+```{r,eval=FALSE,echo=TRUE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point()
+```
+
+```{r,echo=FALSE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point() #+
+  #theme_bw() +
+  #theme(axis.text = element_blank(),
+   #     legend.title = element_blank())
+```
+
+```{r patchwork03x,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.3), dev="svg"}
+library(patchwork)
+p + labs(title = "p") +
+  (p + theme_bw() + labs(title = "p + theme_bw()")) +
+  (p + theme_minimal() +
+     labs(title = "p + theme_minimal()" )) +
+  plot_layout(widths = c(1, 1, 1))
+```
+
+![](`r knitr::fig_chunk("patchwork03x", "svg")`)
+
 ]
 
 ---
@@ -1640,8 +1765,6 @@ Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_da
 ]
 
 .right-column[
-**Temas** ayudan a cambiar la apariencia completa de tu gráfico (solo elementos que no están mapeados de la data).
-
 #### Elementos específicos del tema
 Dentro de la función `theme()` puedes cambiar la __posición de la leyenda__, el __tamaño de los títulos__ de los ejes o el __ancho de la línea__ de los ejes.
 
@@ -1650,40 +1773,69 @@ Dentro de la función `theme()` puedes cambiar la __posición de la leyenda__, e
 - `axis.line=element_line(size=2)`
 
 Ver más argumentos de la función `theme()` [aquí](https://ggplot2.tidyverse.org/reference/theme.html).
+
+
+```{r,eval=FALSE,echo=TRUE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point() + theme_bw()
+```
+
+```{r,echo=FALSE}
+p <- ggplot(mpg, aes(displ, cty)) + geom_point() +
+  theme_bw() #+
+  #theme(axis.text = element_blank(),
+   #     legend.title = element_blank())
+```
+
+```{r patchwork03xx,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2), dev="svg"}
+library(patchwork)
+#p + labs(title = "p") +
+(p + theme(axis.text = element_blank()) + 
+     labs(title = "p + theme(axis.text = element_blank())")) +
+  (p + theme(axis.title = element_blank()) +
+     labs(title = "p + theme(axis.title = element_blank())" )) +
+  plot_layout(widths = c(1, 1))
+```
+
+![](`r knitr::fig_chunk("patchwork03xx", "svg")`)
+
+
 ]
 
----
-.left-code[
-### **Example 8**: Replace the default `ggplot2` theme for another one!
-```{r example-8, eval=FALSE}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating")
+```{r,eval=FALSE,echo=FALSE}
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 8**: Replace the default `ggplot2` theme for another one! -->
+# <!-- ```{r example-8, eval=FALSE} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=tvseries_title)) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="TV series") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-6", "svg")`)   -->
+# <!-- ] -->
+# 
+# <!-- --- -->
+# <!-- .left-code[ -->
+# <!-- ### **Example 8**: Replace the default `ggplot2` theme for another one! -->
+# <!-- ```{r example-8-corrected, fig.show="hide"} -->
+# <!-- ggplot(df, -->
+# <!--        aes(num_votes, average_rating)) + -->
+# <!--   geom_point(aes(color=tvseries_title)) + -->
+# <!--   scale_color_brewer(palette="Set1",  -->
+# <!--                      name="TV series") + -->
+# <!--   xlab("# of votes") + ylab("Average rating") + -->
+# <!--  {{theme_minimal()}} -->
+# <!-- ``` -->
+# <!-- ] -->
+# <!-- .right-plot[ -->
+# <!-- ![](`r knitr::fig_chunk("example-8-corrected", "svg")`)   -->
+# <!-- ] -->
 ```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-6", "svg")`)  
-]
 
----
-.left-code[
-### **Example 8**: Replace the default `ggplot2` theme for another one!
-```{r example-8-corrected, fig.show="hide"}
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating") +
- {{theme_minimal()}}
-```
-]
-.right-plot[
-![](`r knitr::fig_chunk("example-8-corrected", "svg")`)  
-]
 
 ```{r,echo=FALSE,eval=FALSE}
 # <!-- --- -->
@@ -1805,36 +1957,51 @@ ggplot(iris,
 ]
 
 .right-column[
-Permite la anotación de diferentes tipos de `geom` manualmente dando su posición en eje x y eje y.
+Permite la anotación de diferentes tipos de `geom` manualmente dando su posición (x,y):
+- Necesitas agregar la __función `annotate()`__ con el `geom` que quieres usar y las coordinadas (x,y). 
+- ¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
 
-Solo necesitas agregar la función `annotate()` con el `geom` que quieres usar y las coordinadas eje x y eje y, donde serán dibujadas. 
+Otro tipo son las __etiquetas__ de `título`, `subtítulo`, `caption`, `ejes` y `geoms` con la __función `labs()`__:
 
-¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
+```{r example-last, fig.show="hide", fig.align='center', fig.dim=c(4, 2), dev="svg"}
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+  geom_point() + 
+  labs(title = "Mi Primera Figura",
+       subtitle = "Curso básico de R",
+       caption = "ggplot2",
+       x = "eje X", y = "eje Y", color = "Especies")
+```
+
+![](`r knitr::fig_chunk("example-last", "svg")`)
+
 ]
 
 ---
 layout: false
 class: inverse, middle, center
 
-# ¡Llegamos a lo último!
+# ¡Ahora sí terminamos!
 
----
-layout: false
-class: left, middle
-
-## Grabando gráficos `ggplot2`
-
-La función  `ggsave()` permite grabar los gráficos ggplot
-
-Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
-
-Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
-
-Ver más detalles en `?ggsave`
-
-```{r, eval=FALSE}
-ggsave(filename="plot_example.png")
+```{r,eval=FALSE,echo=FALSE}
+# <!-- --- -->
+# <!-- layout: false -->
+# <!-- class: left, middle -->
+# 
+# <!-- ## Grabando gráficos `ggplot2` -->
+# 
+# <!-- La función  `ggsave()` permite grabar los gráficos ggplot -->
+# 
+# <!-- Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`. -->
+# 
+# <!-- Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros) -->
+# 
+# <!-- Ver más detalles en `?ggsave` -->
+# 
+# <!-- ```{r, eval=FALSE} -->
+# <!-- ggsave(filename="plot_example.png") -->
+# <!-- ``` -->
 ```
+
 
 
 ```{r,echo=FALSE,eval=FALSE}
@@ -2001,7 +2168,7 @@ ggsave(filename="plot_example.png")
 ---
 class: inverse, center, middle
 
-# Fin
+# ¡Fin!
 
 ```{r, out.width="50%", echo=FALSE}
 knitr::include_graphics("https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif")

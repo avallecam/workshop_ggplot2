@@ -19,7 +19,7 @@ class: center, middle, inverse, title-slide
 # Mejora tus gráficos con <code>ggplot2</code>
 ## ⚔<br/>R-Ladies Barcelona Workshop
 ### Mireia Ramos-Rodríguez
-### 2021-02-09<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
+### 2021-02-10<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
 
 ---
 
@@ -1413,6 +1413,1244 @@ A	| T1D	| 23
 B	| T1D	| 56
 C	| T1D	| 2
 ]
+
+([Aquí](https://tidyr.tidyverse.org/reference/pivot_longer.html#examples) algunos ejemplos más)
+
+]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+El primer paso para graficar es tener tu data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observation__ es una __fila__.
+
+&lt;div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; "&gt;&lt;table class="table" style="font-size: 18px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sepal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Sepal.Width &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Petal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"&gt; Petal.Width &lt;/th&gt;
+   &lt;th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"&gt; Species &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 13 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 17 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 20 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 21 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 24 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 25 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 26 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 27 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 28 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 29 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 34 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 35 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 36 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 38 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 39 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 40 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 41 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 43 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 46 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 47 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 48 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 53 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 54 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 56 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 57 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 59 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 60 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 61 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 62 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 63 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 64 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 65 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 66 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 67 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 68 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 69 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 71 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 73 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 74 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 78 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 79 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 82 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 84 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 85 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 91 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 94 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; versicolor &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 101 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 103 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 104 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 105 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 106 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 108 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 109 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 111 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 112 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 113 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 114 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 115 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 116 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 117 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 118 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 119 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 122 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 123 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 124 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 125 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 126 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 127 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 128 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 129 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 130 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 131 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 132 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 133 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 134 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 136 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 137 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 138 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 141 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 142 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 143 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 144 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 145 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 146 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 147 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.0 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 149 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; virginica &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+
 ]
 
 
@@ -1445,11 +2683,20 @@ ggplot(iris,
 ]
 
 .right-column[
-El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos visuales o parámetros __dentro de__ la función `aes()`:
+El argumento __mapping__ indica cómo mapeamos la __columna de datos__ a elementos visuales o parámetros:
 
 - Variable 1 → **x**
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
+
+Los __nombres de columna__:
+
+- Deben especificarse __dentro de la función `aes()`__
+- No requieren de comillas :)
+
+Extra:
+
+- La función `aes()` es una contracción de _"aesthetics"_, __Estética__ en español.
 
 ]
 
@@ -1712,19 +2959,22 @@ ggplot(iris,
 ]
 
 .right-column[
-Ajusta las escalas para los diferentes parámetros estéticos (Mapeos):
+__Ajusta las escalas__ para los diferentes parámetros estéticos (Mapeos):
 
 `scale` + `&lt;aes&gt;` + `&lt;type&gt;`, donde:
 
-- `&lt;aes&gt;` indica el parámetro que quieres modificar (_x_, _y_, _color_, _shape_)
-- `&lt;type&gt;` indica qué tipo de variable `&lt;aes&gt;` es (o la modificación a realizar).
+- `&lt;aes&gt;` indica el __parámetro__ que quieres modificar (_x_, _y_, _color_, _shape_)
+- `&lt;type&gt;` indica: 
+  + qué __tipo de variable__ es `&lt;aes&gt;`, o
+  + la __modificación a realizar__.
 
 Algunos ejemplos:
 
-- `scale_x_discrete()` modifica el __eje x__ discreto.
-- `scale_y_continuous()` modifica el __eje y__ continuo. 
-- `scale_color_grey()` modifica el __color__ a una escala de grises.
-- `scale_fill_gradient()` ajusta el color de __relleno__ en gradiente.
+- `scale_x_discrete()` modifica el __eje x__ _discreto_.
+- `scale_y_continuous()` modifica el __eje y__ _continuo_. 
+- `scale_color_grey()` modifica el __color__ a una _escala de grises_.
+- `scale_fill_gradient()` ajusta el color de __relleno__ en _gradiente_.
+- `scale_x_log10()` transforma el __eje x__ a una _escala logarítmica en base 10_.
 ]
 
 ---
@@ -1785,11 +3035,11 @@ class: left, middle
 
 ## Grabando gráficos `ggplot2`
 
-La función  `ggsave()` permite grabar los gráficos ggplot
+La __función `ggsave()`__ permite grabar los gráficos ggplot
 
-Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
+Por defecto, grabará el último gráfico generado en el archivo especificado en el __argumento `filename`__.
 
-Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
+Automáticamente extraerá el __formato del sufijo en `filename`__ ("png", "pdf", "svg" entre otros)
 
 Ver más detalles en `?ggsave`
 
@@ -1798,14 +3048,31 @@ Ver más detalles en `?ggsave`
 ggsave(filename="plot_example.png")
 ```
 
+---
+layout: false
+class: inverse, middle, center
+
+# Ahora sí...
+
 
 ---
 class: inverse, center, middle
 
 # Fin
 
-&lt;img src="https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif" width="50%" /&gt;
+&lt;img src="https://media.giphy.com/media/QW5nKIoebG8y4/giphy.gif" width="50%" /&gt;
 
+---
+layout: false
+class: inverse, middle, center
+
+## ¡otra! ¡otra! ¡otra! 
+
+---
+layout: false
+class: inverse, middle, center
+
+## si deseas continuar...
 
 ---
 layout: false
@@ -1851,11 +3118,39 @@ ggplot(iris,
 ---
 .left-column[
 ## Transformaciones estadísticas
+`geom_*()`
+]
+
+.right-column[
+Algunas __funciones `geom`__ pueden realizar __resumenes estadísticos__ en tu data, por ejemplo:
+
+- Ajustar una **regresión lineal**.
+- Ajustar una **regresión no-lineal**.
+
+
+```r
+p &lt;- ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+
+
+
+
+![](presentation_ggplot2_files/figure-html/patchwork02x-1.svg)
+
+
+]
+
+
+---
+.left-column[
+## Transformaciones estadísticas
 `stat_*()`
 ]
 
 .right-column[
-La función `stat` y sus parámetros realizan la transformación en tu data, por ejemplo:
+Pero la __función `stat`__ y sus parámetros __realizan la transformación__ en tu data, por ejemplo:
 
 - Graficar el **promedio**  de puntos.
 - Graficar el **error estandar** del promedio de puntos.
@@ -1868,8 +3163,9 @@ ggplot(iris, aes(Species, Petal.Width)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-21-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-23-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 ]
+
 
 
 
@@ -2057,6 +3353,19 @@ Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_da
 
 
 **Temas completos** son una forma elegante de cambiar la apariencia del gráfico con una sola función!
+
+
+
+```r
+p &lt;- ggplot(mpg, aes(displ, cty)) + geom_point()
+```
+
+
+
+
+
+![](presentation_ggplot2_files/figure-html/patchwork03x-1.svg)
+
 ]
 
 ---
@@ -2069,8 +3378,6 @@ Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_da
 ]
 
 .right-column[
-**Temas** ayudan a cambiar la apariencia completa de tu gráfico (solo elementos que no están mapeados de la data).
-
 #### Elementos específicos del tema
 Dentro de la función `theme()` puedes cambiar la __posición de la leyenda__, el __tamaño de los títulos__ de los ejes o el __ancho de la línea__ de los ejes.
 
@@ -2079,42 +3386,24 @@ Dentro de la función `theme()` puedes cambiar la __posición de la leyenda__, e
 - `axis.line=element_line(size=2)`
 
 Ver más argumentos de la función `theme()` [aquí](https://ggplot2.tidyverse.org/reference/theme.html).
-]
 
----
-.left-code[
-### **Example 8**: Replace the default `ggplot2` theme for another one!
+
 
 ```r
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating")
+p &lt;- ggplot(mpg, aes(displ, cty)) + geom_point() + theme_bw()
 ```
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/example-6-1.svg)  
+
+
+
+
+
+![](presentation_ggplot2_files/figure-html/patchwork03xx-1.svg)
+
+
 ]
 
----
-.left-code[
-### **Example 8**: Replace the default `ggplot2` theme for another one!
 
-```r
-ggplot(df,
-       aes(num_votes, average_rating)) +
-  geom_point(aes(color=tvseries_title)) +
-  scale_color_brewer(palette="Set1", 
-                     name="TV series") +
-  xlab("# of votes") + ylab("Average rating") +
-* theme_minimal()
-```
-]
-.right-plot[
-![](presentation_ggplot2_files/figure-html/example-8-corrected-1.svg)  
-]
+
 
 
 
@@ -2166,37 +3455,34 @@ ggplot(iris,
 ]
 
 .right-column[
-Permite la anotación de diferentes tipos de `geom` manualmente dando su posición en eje x y eje y.
+Permite la anotación de diferentes tipos de `geom` manualmente dando su posición (x,y):
+- Necesitas agregar la __función `annotate()`__ con el `geom` que quieres usar y las coordinadas (x,y). 
+- ¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
 
-Solo necesitas agregar la función `annotate()` con el `geom` que quieres usar y las coordinadas eje x y eje y, donde serán dibujadas. 
+Otro tipo son las __etiquetas__ de `título`, `subtítulo`, `caption`, `ejes` y `geoms` con la __función `labs()`__:
 
-¡Si has usado `facet_*()` la anotación será dibujado en cada panel!
+
+```r
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+  geom_point() + 
+  labs(title = "Mi Primera Figura",
+       subtitle = "Curso básico de R",
+       caption = "ggplot2",
+       x = "eje X", y = "eje Y", color = "Especies")
+```
+
+![](presentation_ggplot2_files/figure-html/example-last-1.svg)
+
 ]
 
 ---
 layout: false
 class: inverse, middle, center
 
-# ¡Llegamos a lo último!
-
----
-layout: false
-class: left, middle
-
-## Grabando gráficos `ggplot2`
-
-La función  `ggsave()` permite grabar los gráficos ggplot
-
-Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
-
-Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
-
-Ver más detalles en `?ggsave`
+# ¡Ahora sí terminamos!
 
 
-```r
-ggsave(filename="plot_example.png")
-```
+
 
 
 
@@ -2205,7 +3491,7 @@ ggsave(filename="plot_example.png")
 ---
 class: inverse, center, middle
 
-# Fin
+# ¡Fin!
 
 &lt;img src="https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif" width="50%" /&gt;
 
