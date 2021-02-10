@@ -19,7 +19,7 @@ class: center, middle, inverse, title-slide
 # Mejora tus gráficos con <code>ggplot2</code>
 ## ⚔<br/>R-Ladies Barcelona Workshop
 ### Mireia Ramos-Rodríguez
-### 2021-02-08<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
+### 2021-02-09<br/><br/>(adaptado al español y modificado por Andree Valle Campos)
 
 ---
 
@@ -1451,26 +1451,8 @@ El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos v
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
 
-Puedes definir Mapeos para:
-- **gráfico completo** incluyéndolo en la función `ggplot()`.
-- **geometría específica** incluyéndolo en la función `geom_xxx()`.
-
-
-```r
-# para gráfico completo o global
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-*               color=Species)) +
-  geom_point() + 
-  geom_line()
-
-# para geometría específica
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_point() +
-*geom_line(aes(color=Species))
-
-# ¡Veremos el resultado luego de 3 diapositivas!
-```
 ]
+
 
 ---
 class: highlight
@@ -1534,9 +1516,7 @@ Cajas    | `geom_boxplot()`   | ![](presentation_ggplot2_files/figure-html/geom-
 ]
 
 .right-column[
-Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
-
-Estas son algunas de las funciones `geom_*` disponibles:
+Estas son algunas de las __funciones `geom_*`__ disponibles:
 
 
 ```
@@ -1561,7 +1541,6 @@ Estas son algunas de las funciones `geom_*` disponibles:
 ```
 ]
 
-
 ---
 .left-column[
 ### Data
@@ -1571,27 +1550,12 @@ Estas son algunas de las funciones `geom_*` disponibles:
 ]
 
 .right-column[
-Así quedarían las **geometrías** al usar el **mapeo** completo y específico:
+**¡Recomendamos en un 100% usar las "hojas de plagio" o [cheatsheets](https://drive.google.com/file/d/1Mz_uNvvlH9grqIRe8S_xeYe3ag3G5Sv8/view?usp=sharing)!**
 
-
-```r
-# para gráfico completo o global
-A &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-*                    color=Species)) +
-     geom_point() + 
-     geom_line()
-
-# para geometría específica
-B &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-     geom_point() +
-*   geom_line(aes(color=Species))
-```
-
-
-
-![](presentation_ggplot2_files/figure-html/mapeo01-1.svg)
+&lt;img src="data/geom-espanhol.PNG" width="100%" /&gt;
 
 ]
+
 
 ---
 layout: false
@@ -1607,6 +1571,103 @@ layout: false
 class: inverse, middle, center
 
 ## Un breve pasito intermedio
+
+
+---
+layout: true
+class: left, top
+
+## `ggplot2` intermedio
+
+
+
+---
+class: highlight
+
+.left-code[
+
+```r
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+*    geom_point() 
+```
+
+#### Data
+#### Mapeos
+### Geometrías
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/gg-canvas3-1.svg)
+]
+
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+
+```r
+A &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+*                    color=Species)) +
+     geom_point() + 
+     geom_line()
+#.
+#.
+#.
+#.
+```
+
+
+
+![](presentation_ggplot2_files/figure-html/mapeo01-1.svg)
+
+]
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+
+```r
+A &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+*                    color=Species)) +
+     geom_point() + 
+     geom_line()
+
+B &lt;- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+     geom_point() +
+*   geom_line(aes(color=Species))
+```
+
+
+
+![](presentation_ggplot2_files/figure-html/mapeo01b-1.svg)
+
+]
+
+
+
 
 ---
 layout: true
@@ -1716,6 +1777,40 @@ class: inverse, middle, center
 layout: false
 class: inverse, middle, center
 
+# ¡Llegamos a lo último!
+
+---
+layout: false
+class: left, middle
+
+## Grabando gráficos `ggplot2`
+
+La función  `ggsave()` permite grabar los gráficos ggplot
+
+Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
+
+Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
+
+Ver más detalles en `?ggsave`
+
+
+```r
+ggsave(filename="plot_example.png")
+```
+
+
+---
+class: inverse, center, middle
+
+# Fin
+
+&lt;img src="https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif" width="50%" /&gt;
+
+
+---
+layout: false
+class: inverse, middle, center
+
 ## ¡Tiempo para funciones más avanzadas!
 
 ---
@@ -1773,7 +1868,7 @@ ggplot(iris, aes(Species, Petal.Width)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-17-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-21-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 ]
 
 

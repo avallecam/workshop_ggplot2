@@ -470,25 +470,8 @@ El argumento __mapping__ indica cómo mapeamos la columna de datos a elementos v
 - Variable 2 → **y**
 - Variable 3 → **color**, fill, shape, etc.
 
-Puedes definir Mapeos para:
-- **gráfico completo** incluyéndolo en la función `ggplot()`.
-- **geometría específica** incluyéndolo en la función `geom_xxx()`.
-
-```{r,eval=FALSE}
-# para gráfico completo o global
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-               {{color=Species)) +}}
-  geom_point() + 
-  geom_line()
-
-# para geometría específica
-ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_point() +
-{{geom_line(aes(color=Species))}}
-
-# ¡Veremos el resultado luego de 3 diapositivas!
-```
 ]
+
 
 ---
 class: highlight
@@ -575,15 +558,12 @@ Cajas    | `geom_boxplot()`   | ![](`r knitr::fig_chunk("geom-box", "svg")`)
 ]
 
 .right-column[
-Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
-
-Estas son algunas de las funciones `geom_*` disponibles:
+Estas son algunas de las __funciones `geom_*`__ disponibles:
 
 ```{r, echo=FALSE}
 lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 ```
 ]
-
 
 ---
 .left-column[
@@ -594,43 +574,14 @@ lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 ]
 
 .right-column[
-Así quedarían las **geometrías** al usar el **mapeo** completo y específico:
+**¡Recomendamos en un 100% usar las "hojas de plagio" o [cheatsheets](https://drive.google.com/file/d/1Mz_uNvvlH9grqIRe8S_xeYe3ag3G5Sv8/view?usp=sharing)!**
 
-```{r,eval=FALSE}
-# para gráfico completo o global
-A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-                    {{color=Species)) +}}
-     geom_point() + 
-     geom_line()
-
-# para geometría específica
-B <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-     geom_point() +
-   {{geom_line(aes(color=Species))}}
+```{r, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("data/geom-espanhol.PNG")
 ```
-
-```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2.3), dev="svg"}
-# para gráfico completo o global
-a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
-  geom_point() + 
-  geom_line() +
-  theme_void() +
-  theme(#legend.position="bottom",
-        legend.title = element_blank())
-b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_point() + 
-  geom_line(aes(color=Species)) +
-  theme_void() +
-  theme(#legend.position="bottom",
-        legend.title = element_blank())
-library(patchwork)
-a + labs(title = "(A) mapeo global") +
-  (b + labs(title = "(B) mapeo específico"))
-```
-
-![](`r knitr::fig_chunk("mapeo01", "svg")`)
 
 ]
+
 
 ---
 layout: false
@@ -879,6 +830,133 @@ layout: false
 class: inverse, middle, center
 
 ## Un breve pasito intermedio
+
+
+---
+layout: true
+class: left, top
+
+## `ggplot2` intermedio
+
+
+
+---
+class: highlight
+
+.left-code[
+```{r eval=FALSE}
+ggplot(iris,
+      aes(x=Sepal.Length, y=Sepal.Width, 
+          color=Species)) +
+    {{geom_point() }}
+```
+
+#### Data
+#### Mapeos
+### Geometrías
+]
+.right-plot[
+![](`r knitr::fig_chunk("gg-canvas3", "svg")`)
+]
+
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+```{r,eval=FALSE}
+A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                    {{color=Species)) +}}
+     geom_point() + 
+     geom_line()
+#.
+#.
+#.
+#.
+```
+
+```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(4.3, 2), dev="svg"}
+# para gráfico completo o global
+a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
+  geom_point() + 
+  geom_line() +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() + 
+  geom_line(aes(color=Species)) +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+library(patchwork)
+a + labs(title = "(A) mapeo global")
+```
+
+![](`r knitr::fig_chunk("mapeo01", "svg")`)
+
+]
+
+
+---
+.left-column[
+### Data
+### Mapeos
+## Geometrías
+`geom_*()`
+]
+
+.right-column[
+Puedes definir __Mapeos__ para:
+- el **gráfico completo** incluyéndolo en la función `ggplot()`.
+- una **geometría específica** incluyéndolo en la función `geom_xxx()`.
+
+```{r,eval=FALSE}
+A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
+                    {{color=Species)) +}}
+     geom_point() + 
+     geom_line()
+
+B <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+     geom_point() +
+   {{geom_line(aes(color=Species))}}
+```
+
+```{r mapeo01b,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2), dev="svg"}
+# para gráfico completo o global
+a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
+  geom_point() + 
+  geom_line() +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() + 
+  geom_line(aes(color=Species)) +
+  theme_void() +
+  theme(#legend.position="bottom",
+        legend.title = element_blank())
+library(patchwork)
+a + labs(title = "(A) mapeo global") +
+  (b + labs(title = "(B) mapeo específico"))
+```
+
+![](`r knitr::fig_chunk("mapeo01b", "svg")`)
+
+]
+
+
+
 
 ---
 layout: true
@@ -1140,6 +1218,41 @@ layout: false
 class: inverse, middle, center
 
 # ¡Más ejemplos y ejercicios!
+
+---
+layout: false
+class: inverse, middle, center
+
+# ¡Llegamos a lo último!
+
+---
+layout: false
+class: left, middle
+
+## Grabando gráficos `ggplot2`
+
+La función  `ggsave()` permite grabar los gráficos ggplot
+
+Por defecto, grabará el último gráfico generado en el archivo especificado en `filename`.
+
+Automáticamente extraerá el formato correcto del sufijo en `filename` ("png", "pdf", "svg" entre otros)
+
+Ver más detalles en `?ggsave`
+
+```{r, eval=FALSE}
+ggsave(filename="plot_example.png")
+```
+
+
+---
+class: inverse, center, middle
+
+# Fin
+
+```{r, out.width="50%", echo=FALSE}
+knitr::include_graphics("https://media.giphy.com/media/l4JySAWfMaY7w88sU/giphy.gif")
+```
+
 
 ---
 layout: false
