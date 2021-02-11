@@ -820,8 +820,7 @@ class: left, top
 1. **Usar la geometría `geom_col()`**
 
 ```{r, fig.show="hide",eval=FALSE,echo=TRUE}
-# library(tidyverse)
-# library(aweek)
+# library(tidyverse); install.packages(aweek); library(aweek)
 data_covid %>% 
   filter(EDAD >= 0) %>% 
   mutate(SEMANA_EPI = date2week(FECHA_RESULTADO, #<<
@@ -1153,13 +1152,12 @@ class: left, top, highlight
 1. _Retirar_ filas con edades negativas.
 1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
 1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
-1. **Mapear x: "Fecha" y: "Grupo de Edad" fill: "Casos"**
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
 1. **Usar la geometría `geom_tile()`**
 1. **Comentar: ¿En qué se diferencia con el gráfico de la tarea 1.6? ¿Cuál prefieres?**
 
 ```{r, fig.show="hide",warning=FALSE,message=FALSE,eval=FALSE}
-# library(tidyverse)
-# install.packages("Hmisc")
+# library(tidyverse); install.packages("Hmisc")
 data_covid %>% 
   filter(EDAD >= 0) %>% 
   mutate(EDAD_CAT=Hmisc::cut2(x = EDAD,cuts = seq(10,80,10))) %>% 
@@ -1818,10 +1816,9 @@ class: left, top
 1. _Retirar_ filas con edades negativas.
 1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
 1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
-1. **Mapear x: "Fecha" y: "Grupo de Edad" fill: "Casos"**
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
 1. **Usar la geometría `geom_tile()`**
 1. **Usar escala viridis con `scale_fill_viridis_c()`**
-1. **Comentar: ¿En qué se diferencia con el gráfico de la tarea 1.7? ¿Cuál prefieres?**
 
 ```{r example-20, fig.show="hide",warning=FALSE,message=FALSE}
 # library(tidyverse)
@@ -1859,8 +1856,6 @@ class: left, top, highlight
 1. **Mapear x: "Fecha" y: "Casos"**
 1. **Usar la geometría `geom_point()`**
 1. **Usar la geometría `geom_smooth()`**
-1. **Cambiar la geometría con el método de Regresión Lineal `geom_smooth(method="lm")`**
-1. **Comentar: ¿En qué se diferencian? ¿Cuál prefiere?**
 
 ```{r, fig.show="hide",warning=FALSE,message=FALSE,eval=FALSE}
 # library(tidyverse)
@@ -1914,8 +1909,7 @@ class: left, top, highlight
 1. **Comentar: ¿En qué se diferencian tarea 2.1 y 2.2?**
 
 ```{r, fig.show="hide",warning=FALSE,message=FALSE,eval=FALSE}
-# library(tidyverse)
-# install.packages("zoo")
+# library(tidyverse); install.packages("zoo")
 data_covid %>% 
   filter(EDAD >= 0) %>% 
   count(FECHA_RESULTADO) %>%
@@ -1958,11 +1952,11 @@ class: left, top, highlight
 
 ---
 .left-code[
-### Grafique un __Diagrama de Líneas__ con casos incidentes por "Fecha" por Departamentos. Escala eje Y por log10. Agrega una regresión lineal a cada uno.
+### Grafique un __Diagrama de Líneas__ con casos incidentes por "Fecha" por Departamentos. Escala eje Y por log10. Regresión lineal c/u.
 
 1. _Retirar_ filas con edades negativas.
 1. _Contar_ casos por fecha y departamento.
-1. **Mapear x: "Fecha" y: "Casos" by: "Departamento"**
+1. **Mapear x: "Fecha" y: "Casos" color: "Depart."**
 1. **Usar la geometría `geom_point()`**
 1. **Usar la escala `scale_y_log10()`**
 1. **Usar la geometría `geom_smooth()`**
