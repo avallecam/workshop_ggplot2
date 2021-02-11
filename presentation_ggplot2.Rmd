@@ -518,8 +518,8 @@ Data en formato __"limpio"__ (_"tidy"_):
 __¿Reconoces esta base de datos?__
 --> __¿Está en formato "limpio"?__
 
-```{r, echo=FALSE, fig.cap="", out.width = '70%'}
-knitr::include_graphics("data/ira2020-messy.PNG")
+```{r, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("data/ira2020-all-messy.PNG")
 ```
 
 
@@ -544,12 +544,40 @@ Data en formato __"limpio"__ (_"tidy"_):
 __¿Reconoces esta base de datos?__
 --> __¿Está en formato "limpio"?__
 
-```{r, echo=FALSE, fig.cap="", out.width = '90%'}
-knitr::include_graphics("data/covid2020-tidy.PNG")
+```{r, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("data/covid2020-all-tidy.PNG")
 ```
 
 
 ]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+Data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+__¿Reconoces esta base de datos?__
+--> __¿Está en formato "limpio"?__
+
+```{r, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("data/codubi-all-messy.PNG")
+```
+
+
+]
+
 
 
 
@@ -572,8 +600,8 @@ Data en formato __"limpio"__ (_"tidy"_):
 __¿Reconoces esta base de datos?__
 --> __¿Está en formato "limpio"?__
 
-```{r gg-canvas0x,echo=TRUE}
-pinguinos %>% glimpse()
+```{r,echo=TRUE}
+pinguinos
 ```
 
 
@@ -789,7 +817,7 @@ lsf.str("package:ggplot2") %>% grep("^geom_", ., value = TRUE)
 **¡Recomendamos en un 100% usar las "Hojas de Plagio" o [Cheatsheets (ver)](https://drive.google.com/file/d/1Mz_uNvvlH9grqIRe8S_xeYe3ag3G5Sv8/view?usp=sharing)!**
 
 ```{r, echo=FALSE, fig.cap="", out.width = '100%'}
-knitr::include_graphics("data/geom-espanhol.PNG")
+knitr::include_graphics("data/ggplot-hoja.PNG")
 ```
 
 ]
@@ -943,8 +971,8 @@ __¿Reconoces esta base de datos?__
 
 **Fundamentar**
 
-```{r, echo=FALSE, fig.cap="", out.width = '70%'}
-knitr::include_graphics("data/eda2020-messy.PNG")
+```{r, echo=FALSE, fig.cap="", out.width = '100%'}
+knitr::include_graphics("data/eda2020-all-messy.PNG")
 ```
 
 ]
@@ -977,7 +1005,7 @@ __¿Reconoces esta base de datos?__
 **Fundamentar**
 
 ```{r, echo=FALSE, fig.cap="", out.width = '90%'}
-knitr::include_graphics("data/gapminder-tidy.PNG")
+knitr::include_graphics("data/gapminder-all-tidy.PNG")
 ```
 
 ]
@@ -1827,15 +1855,87 @@ data_covid %>%
   count(FECHA_RESULTADO,EDAD_CAT) %>%
   ggplot(aes(x = FECHA_RESULTADO, #<< 
              y = EDAD_CAT, #<<
-             fill = n)) + #<<
-  geom_tile() + #<<
-  scale_fill_viridis_c() #<<
+             fill = n)) #<<
 ```
 
 ]
 .right-plot[
 ![](`r knitr::fig_chunk("example-20", "svg")`)
 ]
+
+
+---
+layout: true
+class: left, top
+
+## Aplicación 2 
+
+---
+.left-code[
+### Sobre la Tarea 1.7. Agregar escala de color viridis.
+
+1. _Retirar_ filas con edades negativas.
+1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
+1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
+1. **Usar la geometría `geom_tile()`**
+1. **Usar escala viridis con `scale_fill_viridis_c()`**
+
+```{r example-201, fig.show="hide",warning=FALSE,message=FALSE}
+# library(tidyverse)
+# install.packages("Hmisc")
+data_covid %>% 
+  filter(EDAD >= 0) %>% 
+  mutate(EDAD_CAT=Hmisc::cut2(x = EDAD,cuts = seq(10,80,10))) %>% 
+  count(FECHA_RESULTADO,EDAD_CAT) %>%
+  ggplot(aes(x = FECHA_RESULTADO, 
+             y = EDAD_CAT, 
+             fill = n)) + 
+  geom_tile() #<<
+```
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-201", "svg")`)
+]
+
+
+---
+layout: true
+class: left, top
+
+## Aplicación 2 
+
+---
+.left-code[
+### Sobre la Tarea 1.7. Agregar escala de color viridis.
+
+1. _Retirar_ filas con edades negativas.
+1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
+1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
+1. **Usar la geometría `geom_tile()`**
+1. **Usar escala viridis con `scale_fill_viridis_c()`**
+
+```{r example-202, fig.show="hide",warning=FALSE,message=FALSE}
+# library(tidyverse)
+# install.packages("Hmisc")
+data_covid %>% 
+  filter(EDAD >= 0) %>% 
+  mutate(EDAD_CAT=Hmisc::cut2(x = EDAD,cuts = seq(10,80,10))) %>% 
+  count(FECHA_RESULTADO,EDAD_CAT) %>%
+  ggplot(aes(x = FECHA_RESULTADO,  
+             y = EDAD_CAT, 
+             fill = n)) + 
+  geom_tile() + 
+  scale_fill_viridis_c() #<<
+```
+
+]
+.right-plot[
+![](`r knitr::fig_chunk("example-202", "svg")`)
+]
+
 
 
 

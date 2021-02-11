@@ -3189,7 +3189,7 @@ Data en formato __"limpio"__ (_"tidy"_):
 __¿Reconoces esta base de datos?__
 --&gt; __¿Está en formato "limpio"?__
 
-&lt;img src="data/ira2020-messy.PNG" width="70%" /&gt;
+&lt;img src="data/ira2020-all-messy.PNG" width="100%" /&gt;
 
 
 ]
@@ -3213,10 +3213,36 @@ Data en formato __"limpio"__ (_"tidy"_):
 __¿Reconoces esta base de datos?__
 --&gt; __¿Está en formato "limpio"?__
 
-&lt;img src="data/covid2020-tidy.PNG" width="90%" /&gt;
+&lt;img src="data/covid2020-all-tidy.PNG" width="100%" /&gt;
 
 
 ]
+
+
+---
+
+.left-column[
+
+## Data
+`ggplot()`
+
+]
+
+.right-column[
+
+Data en formato __"limpio"__ (_"tidy"_):
+
+1. Cada __variable__ es una __columna__.
+2. Cada __observación__ es una __fila__.
+
+__¿Reconoces esta base de datos?__
+--&gt; __¿Está en formato "limpio"?__
+
+&lt;img src="data/codubi-all-messy.PNG" width="100%" /&gt;
+
+
+]
+
 
 
 
@@ -3241,18 +3267,24 @@ __¿Reconoces esta base de datos?__
 
 
 ```r
-pinguinos %&gt;% glimpse()
+pinguinos
 ```
 
 ```
-## Rows: 342
-## Columns: 6
-## $ species        &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel...
-## $ island         &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgerse...
-## $ bill_length_mm &lt;dbl&gt; 39.1, 39.5, 40.3, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0...
-## $ bill_depth_mm  &lt;dbl&gt; 18.7, 17.4, 18.0, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2...
-## $ sex            &lt;fct&gt; male, female, female, female, male, female, male, NA...
-## $ year           &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007...
+## # A tibble: 342 x 6
+##    species island    bill_length_mm bill_depth_mm sex     year
+##    &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt; &lt;fct&gt;  &lt;int&gt;
+##  1 Adelie  Torgersen           39.1          18.7 male    2007
+##  2 Adelie  Torgersen           39.5          17.4 female  2007
+##  3 Adelie  Torgersen           40.3          18   female  2007
+##  4 Adelie  Torgersen           36.7          19.3 female  2007
+##  5 Adelie  Torgersen           39.3          20.6 male    2007
+##  6 Adelie  Torgersen           38.9          17.8 female  2007
+##  7 Adelie  Torgersen           39.2          19.6 male    2007
+##  8 Adelie  Torgersen           34.1          18.1 &lt;NA&gt;    2007
+##  9 Adelie  Torgersen           42            20.2 &lt;NA&gt;    2007
+## 10 Adelie  Torgersen           37.8          17.1 &lt;NA&gt;    2007
+## # ... with 332 more rows
 ```
 
 
@@ -3448,7 +3480,7 @@ Estas son algunas de las __funciones `geom_*`__ disponibles:
 .right-column[
 **¡Recomendamos en un 100% usar las "Hojas de Plagio" o [Cheatsheets (ver)](https://drive.google.com/file/d/1Mz_uNvvlH9grqIRe8S_xeYe3ag3G5Sv8/view?usp=sharing)!**
 
-&lt;img src="data/geom-espanhol.PNG" width="100%" /&gt;
+&lt;img src="data/ggplot-hoja.PNG" width="100%" /&gt;
 
 ]
 
@@ -3606,7 +3638,7 @@ __¿Reconoces esta base de datos?__
 
 **Fundamentar**
 
-&lt;img src="data/eda2020-messy.PNG" width="70%" /&gt;
+&lt;img src="data/eda2020-all-messy.PNG" width="100%" /&gt;
 
 ]
 
@@ -3637,7 +3669,7 @@ __¿Reconoces esta base de datos?__
 
 **Fundamentar**
 
-&lt;img src="data/gapminder-tidy.PNG" width="90%" /&gt;
+&lt;img src="data/gapminder-all-tidy.PNG" width="90%" /&gt;
 
 ]
 
@@ -4057,15 +4089,89 @@ data_covid %&gt;%
   count(FECHA_RESULTADO,EDAD_CAT) %&gt;%
 * ggplot(aes(x = FECHA_RESULTADO,
 *            y = EDAD_CAT,
-*            fill = n)) +
-* geom_tile() +
-* scale_fill_viridis_c()
+*            fill = n))
 ```
 
 ]
 .right-plot[
 ![](presentation_ggplot2_files/figure-html/example-20-1.svg)
 ]
+
+
+---
+layout: true
+class: left, top
+
+## Aplicación 2 
+
+---
+.left-code[
+### Sobre la Tarea 1.7. Agregar escala de color viridis.
+
+1. _Retirar_ filas con edades negativas.
+1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
+1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
+1. **Usar la geometría `geom_tile()`**
+1. **Usar escala viridis con `scale_fill_viridis_c()`**
+
+
+```r
+# library(tidyverse)
+# install.packages("Hmisc")
+data_covid %&gt;% 
+  filter(EDAD &gt;= 0) %&gt;% 
+  mutate(EDAD_CAT=Hmisc::cut2(x = EDAD,cuts = seq(10,80,10))) %&gt;% 
+  count(FECHA_RESULTADO,EDAD_CAT) %&gt;%
+  ggplot(aes(x = FECHA_RESULTADO, 
+             y = EDAD_CAT, 
+             fill = n)) + 
+* geom_tile()
+```
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-201-1.svg)
+]
+
+
+---
+layout: true
+class: left, top
+
+## Aplicación 2 
+
+---
+.left-code[
+### Sobre la Tarea 1.7. Agregar escala de color viridis.
+
+1. _Retirar_ filas con edades negativas.
+1. _Recategoriza_ "Edad" con `Hmisc::cut2()`.
+1. _Cuenta_ casos por "Grupo de Edad" y "Fecha".
+1. **Mapear x: "Fecha" y: "Grupo" fill: "Casos"**
+1. **Usar la geometría `geom_tile()`**
+1. **Usar escala viridis con `scale_fill_viridis_c()`**
+
+
+```r
+# library(tidyverse)
+# install.packages("Hmisc")
+data_covid %&gt;% 
+  filter(EDAD &gt;= 0) %&gt;% 
+  mutate(EDAD_CAT=Hmisc::cut2(x = EDAD,cuts = seq(10,80,10))) %&gt;% 
+  count(FECHA_RESULTADO,EDAD_CAT) %&gt;%
+  ggplot(aes(x = FECHA_RESULTADO,  
+             y = EDAD_CAT, 
+             fill = n)) + 
+  geom_tile() + 
+* scale_fill_viridis_c()
+```
+
+]
+.right-plot[
+![](presentation_ggplot2_files/figure-html/example-202-1.svg)
+]
+
 
 
 
@@ -4334,7 +4440,7 @@ ggplot(pinguinos, aes(species, bill_depth_mm)) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
 
-&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-41-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="presentation_ggplot2_files/figure-html/unnamed-chunk-43-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 ]
 
 
