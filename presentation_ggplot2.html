@@ -3526,8 +3526,7 @@ class: left, top
 
 
 ```r
-# library(tidyverse)
-# library(aweek)
+# library(tidyverse); install.packages(aweek); library(aweek)
 data_covid %&gt;% 
   filter(EDAD &gt;= 0) %&gt;% 
   mutate(SEMANA_EPI = date2week(FECHA_RESULTADO, 
@@ -3562,8 +3561,7 @@ class: left, top
 
 
 ```r
-# library(tidyverse)
-# library(aweek)
+# library(tidyverse); install.packages(aweek); library(aweek)
 data_covid %&gt;% 
   filter(EDAD &gt;= 0) %&gt;% 
   mutate(SEMANA_EPI = date2week(FECHA_RESULTADO,
