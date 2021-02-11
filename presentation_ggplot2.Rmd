@@ -32,9 +32,13 @@ library(kableExtra)
 ```
 
 ```{r,echo=FALSE}
-load("data/tvseries_must_watch.rda")
-df <- tvseries_must_watch
-df <- df[!is.na(df$average_rating),] # Remove rows with NA average
+# install.packages("palmerpenguins")
+pinguinos <- palmerpenguins::penguins %>% 
+  filter(!is.na(bill_length_mm))
+
+# load("data/tvseries_must_watch.rda")
+# df <- tvseries_must_watch
+# df <- df[!is.na(df$average_rating),] # Remove rows with NA average
 ```
 
 ```{r,eval=FALSE,echo=FALSE}
@@ -117,7 +121,7 @@ class: left, top
 ---
 .left-code[
 ```{r gg-canvas0,eval=FALSE}
-iris
+pinguinos
 ```
 
 ### Data
@@ -125,7 +129,7 @@ iris
 ]
 .right-plot[
 ```{r gg-canvas00,echo=FALSE}
-iris %>% 
+pinguinos %>% 
   kable("html", row.names=FALSE) %>% 
   kable_styling(font_size = 18)  %>%  
   scroll_box(height = "500px")
@@ -136,7 +140,7 @@ iris %>%
 ---
 .left-code[
 ```{r gg-canvas1, fig.show="hide"}
-ggplot(iris)
+ggplot(pinguinos)
 ```
 
 ### Data
@@ -149,9 +153,9 @@ ggplot(iris)
 ---
 .left-code[
 ```{r gg-canvas2, fig.show="hide"}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) 
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) 
   
 ```
 
@@ -166,9 +170,9 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas3, fig.show="hide"}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     {{geom_point() }}
 ```
 
@@ -183,9 +187,9 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas4, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
    {{scale_color_brewer(palette="Dark2") }}
 ```
@@ -205,9 +209,9 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas5, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
    {{stat_summary(fun="mean", geom= "line") }}
@@ -230,9 +234,9 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas6, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
@@ -257,14 +261,14 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas7, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-   {{facet_wrap(~Species)}}
+   {{facet_wrap(~species)}}
 ```
 
 .pull-left[
@@ -286,14 +290,14 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas8, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-    facet_wrap(~Species) +
+    facet_wrap(~species) +
    {{theme_bw() + theme(legend.position="top")}}
 ```
 
@@ -317,16 +321,16 @@ ggplot(iris,
 ---
 .left-code[
 ```{r gg-canvas9, fig.show="hide", tidy=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-    facet_wrap(~Species) +
+    facet_wrap(~species) +
     theme_bw() + theme(legend.position="top") +
-   {{annotate("text", x=7.5, y=2.5, label="Pval")}}
+   {{annotate("text", x=55, y=14.5, label="Pval")}}
 ```
 
 .pull-left[
@@ -365,7 +369,7 @@ class: highlight
 
 .left-code[
 ```{r, eval=FALSE}
-ggplot(iris)
+ggplot(pinguinos)
 ```
 
 ### Data
@@ -439,7 +443,7 @@ El primer paso para graficar es tener tu data en formato __"limpio"__ (_"tidy"_)
 2. Cada __observation__ es una __fila__.
 
 ```{r gg-canvas0x,echo=FALSE}
-iris %>% 
+pinguinos %>% 
   kable("html", row.names=TRUE) %>% 
   kable_styling(font_size = 18)  %>%  
   scroll_box(height = "400px")
@@ -472,9 +476,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) 
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) 
   
 ```
 
@@ -517,9 +521,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     {{geom_point() }}
 ```
 
@@ -543,37 +547,37 @@ ggplot(iris,
 Las **geometrías** indican cuáles formas geométricas deben ser graficadas usando los parámetros y variables definidas en `aes()`.
 
 ```{r geom-point, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm, color=species)) +
   geom_point(size=.1) +
   theme_void() + theme(legend.position="none")
 ```
 
 ```{r geom-line, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm, color=species)) +
   stat_summary(fun="mean", geom="line") +
   theme_void() + theme(legend.position="none")
 ```
 
 ```{r geom-bar, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris[round(runif(70, min=1, max=nrow(iris))),], aes(Species, ..count.., fill=Species)) +
+ggplot(pinguinos[round(runif(70, min=1, max=nrow(pinguinos))),], aes(species, ..count.., fill=species)) +
   geom_bar() +
   theme_void() + theme(legend.position="none")
 ```
 
 ```{r geom-hist, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris, aes(Petal.Length, fill=Species)) +
+ggplot(pinguinos, aes(bill_length_mm, fill=species)) +
   geom_histogram() +
   theme_void() + theme(legend.position="none")
 ```
 
 ```{r geom-smooth, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris, aes(Petal.Length, Petal.Width, color=Species)) +
+ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm, color=species)) +
   geom_smooth() +
   theme_void() + theme(legend.position="none")
 ```
 
 ```{r geom-box, include=FALSE, fig.show="hide", fig.dim=c(1, .25), dev="svg"} 
-ggplot(iris, aes(Species, Petal.Width, fill=Species, color=Species)) +
+ggplot(pinguinos, aes(species, bill_depth_mm, fill=species, color=species)) +
   geom_boxplot() +
   theme_void() + theme(legend.position="none")
 ```
@@ -884,9 +888,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     {{geom_point() }}
 ```
 
@@ -914,8 +918,8 @@ Puedes definir __Mapeos__ para:
 - una **geometría específica** incluyéndolo en la función `geom_xxx()`.
 
 ```{r,eval=FALSE}
-A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-                    {{color=Species)) +}}
+A <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, 
+                    {{color=species)) +}}
      geom_point() + 
      geom_line()
 #.
@@ -926,15 +930,15 @@ A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width,
 
 ```{r mapeo01,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(4.3, 2), dev="svg"}
 # para gráfico completo o global
-a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
+a <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, color=species)) +
   geom_point() + 
   geom_line() +
   theme_void() +
   theme(#legend.position="bottom",
         legend.title = element_blank())
-b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+b <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point() + 
-  geom_line(aes(color=Species)) +
+  geom_line(aes(color=species)) +
   theme_void() +
   theme(#legend.position="bottom",
         legend.title = element_blank())
@@ -961,27 +965,27 @@ Puedes definir __Mapeos__ para:
 - una **geometría específica** incluyéndolo en la función `geom_xxx()`.
 
 ```{r,eval=FALSE}
-A <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, 
-                    {{color=Species)) +}}
+A <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, 
+                    {{color=species)) +}}
      geom_point() + 
      geom_line()
 
-B <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+B <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm)) +
      geom_point() +
-   {{geom_line(aes(color=Species))}}
+   {{geom_line(aes(color=species))}}
 ```
 
 ```{r mapeo01b,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 2), dev="svg"}
 # para gráfico completo o global
-a <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color=Species)) +
+a <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, color=species)) +
   geom_point() + 
   geom_line() +
   theme_void() +
   theme(#legend.position="bottom",
         legend.title = element_blank())
-b <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+b <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point() + 
-  geom_line(aes(color=Species)) +
+  geom_line(aes(color=species)) +
   theme_void() +
   theme(#legend.position="bottom",
         legend.title = element_blank())
@@ -1008,9 +1012,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
    {{scale_color_brewer(palette="Dark2")}}
 ```
@@ -1330,9 +1334,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
    {{stat_summary(fun="mean", geom= "line") }}
@@ -1366,13 +1370,15 @@ Algunas __funciones `geom`__ pueden realizar __resumenes estadísticos__ en tu d
 - Ajustar una **regresión no-lineal**.
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- ggplot(mpg, aes(x = displ, y = hwy)) +
+p <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm, 
+                           color = species)) +
   geom_point()
 ```
 
 ```{r,echo=FALSE}
-p <- ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() +
+p <- ggplot(pinguinos, aes(x = bill_length_mm, y = bill_depth_mm,
+                           color = species)) +
+  geom_point(size=0.5) +
   theme_void() +
   theme(legend.position="bottom",
         legend.title = element_blank())
@@ -1407,8 +1413,8 @@ Pero la __función `stat`__ y sus parámetros __realizan la transformación__ en
 - Graficar el **error estandar** del promedio de puntos.
 
 ```{r, fig.dim=c(5, 3), dev="svg", out.width="50%", fig.align="center"}
-ggplot(iris, aes(Species, Petal.Width)) +
-  geom_jitter(aes(color=Species)) +
+ggplot(pinguinos, aes(species, bill_depth_mm)) +
+  geom_jitter(aes(color=species)) +
   stat_summary(fun=mean, geom="point", size=4) +
   stat_summary(fun.data=mean_se, geom="errorbar")
 ```
@@ -1450,9 +1456,9 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
@@ -1490,12 +1496,12 @@ El sistema de coordenadas por defecto es el **cartesiano** (`coord_cartesian()`)
 - `coord_polar()` transformar tu data a coordenadas polares. 
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+p <- ggplot(pinguinos, aes(x = factor(1), fill = factor(species))) +
      geom_bar(width = 1)
 ```
 
 ```{r,echo=FALSE}
-p <- ggplot(mtcars, aes(x = factor(1), fill = factor(cyl))) +
+p <- ggplot(pinguinos, aes(x = factor(1), fill = factor(species))) +
   geom_bar(width = 1) +
   theme_void() +
   theme(legend.position="bottom",
@@ -1559,14 +1565,14 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-   {{facet_wrap(~Species)}}
+   {{facet_wrap(~species)}}
 ```
 
 .pull-left[
@@ -1602,11 +1608,11 @@ Hay dos principales funciones para crear paneles (facet):
 - `facet_wrap()`. Crea serie de paneles con selecciones según __una__ variable discreta.
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point()
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point()
 ```
 
 ```{r,echo=FALSE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point() +
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point() +
   theme_bw() +
   theme(axis.text = element_blank(),
         legend.title = element_blank())
@@ -1615,9 +1621,12 @@ p <- ggplot(mpg, aes(displ, cty)) + geom_point() +
 ```{r patchwork03,echo=FALSE,include=FALSE, fig.show="hide", fig.dim=c(8.6, 3.1), dev="svg"}
 library(patchwork)
 p + labs(title = "p") +
-  (p + facet_grid(cyl~drv) + labs(title = "p + facet_grid(cyl~drv)")) +
-  (p + facet_wrap(~cyl) +
-     labs(title = "p + facet_wrap(~cyl)" )) +
+  (p + facet_grid(species~island) + 
+     theme(axis.title = element_blank()) +
+     labs(title = "p + facet_grid(species~island)")) +
+  (p + facet_wrap(~species) +
+     theme(axis.title = element_blank()) + 
+     labs(title = "p + facet_wrap(~species)" )) +
   plot_layout(widths = c(1, 1, 1))
 ```
 
@@ -1673,14 +1682,14 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-    facet_wrap(~Species) +
+    facet_wrap(~species) +
    {{theme_bw() + theme(legend.position="top")}}
 ```
 
@@ -1732,11 +1741,11 @@ Puedes encontrar funciones de temas dentro de `ggplot2`: `theme_bw()`, `theme_da
 
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point()
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point()
 ```
 
 ```{r,echo=FALSE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point() #+
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point() #+
   #theme_bw() +
   #theme(axis.text = element_blank(),
    #     legend.title = element_blank())
@@ -1776,11 +1785,11 @@ Ver más argumentos de la función `theme()` [aquí](https://ggplot2.tidyverse.o
 
 
 ```{r,eval=FALSE,echo=TRUE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point() + theme_bw()
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point() + theme_bw()
 ```
 
 ```{r,echo=FALSE}
-p <- ggplot(mpg, aes(displ, cty)) + geom_point() +
+p <- ggplot(pinguinos, aes(bill_length_mm, bill_depth_mm)) + geom_point() +
   theme_bw() #+
   #theme(axis.text = element_blank(),
    #     legend.title = element_blank())
@@ -1916,16 +1925,16 @@ class: highlight
 
 .left-code[
 ```{r eval=FALSE}
-ggplot(iris,
-      aes(x=Sepal.Length, y=Sepal.Width, 
-          color=Species)) +
+ggplot(pinguinos,
+      aes(x=bill_length_mm, y=bill_depth_mm, 
+          color=species)) +
     geom_point() +
     scale_color_brewer(palette="Dark2") +
     stat_summary(fun="mean", geom= "line") + 
     coord_flip() +
-    facet_wrap(~Species) +
+    facet_wrap(~species) +
     theme_bw() + theme(legend.position="top") +
-   {{annotate("text", x=7.5, y=2.5, label="Pval")}}
+   {{annotate("text", x=55, y=14.5, label="Pval")}}
 ```
 
 .pull-left[
@@ -1964,11 +1973,11 @@ Permite la anotación de diferentes tipos de `geom` manualmente dando su posici�
 Otro tipo son las __etiquetas__ de `título`, `subtítulo`, `caption`, `ejes` y `geoms` con la __función `labs()`__:
 
 ```{r example-last, fig.show="hide", fig.align='center', fig.dim=c(4, 2), dev="svg"}
-ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+ggplot(pinguinos, aes(x=bill_length_mm, y=bill_depth_mm, color=species)) +
   geom_point() + 
-  labs(title = "Mi Primera Figura",
+  labs(title = "Mi Primera Figura *",
        subtitle = "Curso básico de R",
-       caption = "ggplot2",
+       caption = "* notita abajito :)",
        x = "eje X", y = "eje Y", color = "Especies")
 ```
 
@@ -2042,9 +2051,9 @@ class: inverse, middle, center
 # <!-- ```{r ex-cowplot, fig.show="hide", message=FALSE, fig.dim=c(5.5, 3)} -->
 # <!-- library(cowplot) -->
 # 
-# <!-- p1 <- ggplot(mtcars, aes(disp, mpg)) +  -->
+# <!-- p1 <- ggplot(pinguinos, aes(disp, pinguinos)) +  -->
 # <!--   geom_point() -->
-# <!-- p2 <- ggplot(mtcars, aes(qsec, mpg)) + -->
+# <!-- p2 <- ggplot(pinguinos, aes(qsec, pinguinos)) + -->
 # <!--   geom_point() -->
 # 
 # <!-- {{plot_grid(p1, p2, labels = c('A', 'B'))}} -->
@@ -2100,8 +2109,8 @@ class: inverse, middle, center
 # <!-- library(ggiraph) -->
 # 
 # <!-- gg_point <-   -->
-# <!--   ggplot(mpg,  -->
-# <!--          aes(displ, cty, color=hwy)) + -->
+# <!--   ggplot(pinguinos,  -->
+# <!--          aes(bill_length_mm, bill_depth_mm, color=bill_depth_mm)) + -->
 # <!--   theme_minimal() + -->
 # <!--   geom_point_interactive(aes(tooltip = model,  -->
 # <!--                              data_id = model),  -->
@@ -2115,8 +2124,8 @@ class: inverse, middle, center
 # <!-- library(ggiraph) -->
 # 
 # <!-- gg_point <-   -->
-# <!--   ggplot(mpg,  -->
-# <!--          aes(displ, cty, color=hwy)) + -->
+# <!--   ggplot(pinguinos,  -->
+# <!--          aes(bill_length_mm, bill_depth_mm, color=bill_depth_mm)) + -->
 # <!--   theme_minimal() + -->
 # <!--   geom_point_interactive(aes(tooltip = model,  -->
 # <!--                              data_id = model),  -->
