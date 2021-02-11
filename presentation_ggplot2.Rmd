@@ -1897,7 +1897,7 @@ class: left, top, highlight
 
 ---
 .left-code[
-### Grafique un __Diagrama de Puntos y Tendencia con Media Móvil de 7 días__ según "Fecha"
+### Grafique un __Diagrama de Puntos y Tendencia con Media Móvil de 7 días__
 
 
 1. _Retirar_ filas con edades negativas.
@@ -1906,7 +1906,7 @@ class: left, top, highlight
 1. **Mapear x: "Fecha"**
 1. **Usar la geometría `geom_line()` con un mapeo específico y: "Media Movil"**
 1. **Usar la geometría `geom_point()` con un mapeo específico y: "Casos"**
-1. **Comentar: ¿En qué se diferencian tarea 2.1 y 2.2?**
+1. **Comentar: ¿Diferencias entre tarea 2.1 y 2.2?**
 
 ```{r, fig.show="hide",warning=FALSE,message=FALSE,eval=FALSE}
 # library(tidyverse); install.packages("zoo")
